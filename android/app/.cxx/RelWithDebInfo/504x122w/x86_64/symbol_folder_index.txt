@@ -1,0 +1,1 @@
+/home/alderjanio/flutter-projects/loc_master/build/app/intermediates/cxx/RelWithDebInfo/504x122w/obj/x86_64

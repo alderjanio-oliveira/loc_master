@@ -1,0 +1,2 @@
+/home/alderjanio/flutter-projects/loc_master/android/app/.cxx/RelWithDebInfo/5w4b6l6l/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/home/alderjanio/flutter-projects/loc_master/android/app/.cxx/RelWithDebInfo/5w4b6l6l/arm64-v8a/CMakeFiles/edit_cache.dir
