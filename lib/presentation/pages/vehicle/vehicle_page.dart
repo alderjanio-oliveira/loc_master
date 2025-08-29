@@ -6,7 +6,7 @@ import 'package:loc_master/presentation/routes/app_pages.dart';
 class VehiclesPage extends GetView<VehiclesController> {
   @override
   Widget build(BuildContext context) {
-    Get.find<VehiclesController>().loadVehicles();
+    controller.loadVehicles();
     return Scaffold(
       appBar: AppBar(title: Text('VehiclesPage'), actions: [
         IconButton(
@@ -32,7 +32,7 @@ class VehiclesPage extends GetView<VehiclesController> {
               itemBuilder: (context, index) {
                 final vehicle = controller.vehicles[index];
                 return ListTile(
-                  title: Text(vehicle.name),
+                  title: Text(vehicle.model),
                   subtitle:
                       Text('Plate: ${vehicle.plate} Status: ${vehicle.status}'),
                   onTap: () {
@@ -40,7 +40,7 @@ class VehiclesPage extends GetView<VehiclesController> {
                       Routes.VEHICLE_DETAILS,
                       arguments: vehicle,
                     );
-                    print('Tapped on vehicle: ${vehicle.name}');
+                    print('Tapped on vehicle: ${vehicle.model}');
                   },
                 );
               },

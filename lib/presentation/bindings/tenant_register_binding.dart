@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:loc_master/data/database/database.dart';
-import 'package:loc_master/presentation/controllers/consumer_register_controller.dart';
+import 'package:loc_master/presentation/controllers/tenants_controller.dart';
 
 class TenantRegisterBinding implements Bindings {
   @override
@@ -8,8 +8,8 @@ class TenantRegisterBinding implements Bindings {
     if (!Get.isRegistered<AppDatabase>()) {
       Get.lazyPut<AppDatabase>(() => AppDatabase());
     }
-    Get.lazyPut<ConsumerRegisterController>(
-      () => ConsumerRegisterController(
+    Get.lazyPut<TenantsController>(
+      () => TenantsController(
         Get.find<AppDatabase>(),
       ),
     );

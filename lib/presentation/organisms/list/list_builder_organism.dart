@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:loc_master/presentation/molecules/listTile/list_tile_melecules.dart';
 
-class ListBuilderOrganism extends StatelessWidget {
-  final List list;
+class ListBuilderOrganism extends ListView {
+  final RxList<dynamic> list;
   final VoidCallback? onTap;
   final ValueChanged<dynamic>? onLongPress;
   final IconData? leadingIcon;
@@ -11,7 +12,7 @@ class ListBuilderOrganism extends StatelessWidget {
   final String? keyTitle;
   final String? keySubtitle;
   final bool isDate;
-  const ListBuilderOrganism({
+  ListBuilderOrganism({
     super.key,
     this.onTap,
     this.leadingIcon,
@@ -25,23 +26,24 @@ class ListBuilderOrganism extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: list.length,
-      itemBuilder: (context, index) {
-        final item = list[index].toJson();
-        return ListTileMelecules(
-          title: (item[keyTitle ?? 'title'] ?? 'Item $index').toString(),
-          subtitle: isDate
-              ? formatDate((list[index].date).toString())
-              : (item[keySubtitle ?? 'subtitle'] ?? 'Subtitle $index')
-                  .toString(),
-          leadingIcon: leadingIcon,
-          trailingIcon: trailingIcon,
-          onTap: onTap,
-          onLongPress: () => onLongPress?.call(list[index]),
-        );
-      },
+    return Obx(
+      () => ListView.builder(
+        shrinkWrap: true,
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          final item = list[index].toJson();
+          return ListTileMelecules(
+            title: (item[keyTitle ?? 'title'] ?? 'Item ').toString(),
+            subtitle: isDate
+                ? formatDate((list[index].date).toString())
+                : (item[keySubtitle ?? 'subtitle'] ?? 'Subtitle ').toString(),
+            leadingIcon: leadingIcon,
+            trailingIcon: trailingIcon,
+            onTap: onTap,
+            onLongPress: () => onLongPress?.call(list[index]),
+          );
+        },
+      ),
     );
   }
 

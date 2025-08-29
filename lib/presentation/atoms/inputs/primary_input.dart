@@ -5,6 +5,8 @@ class PrimaryInput extends StatelessWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
+  final VoidCallback? onTap;
+  final bool readOnly;
 
   const PrimaryInput({
     super.key,
@@ -12,11 +14,14 @@ class PrimaryInput extends StatelessWidget {
     this.controller,
     this.validator,
     this.keyboardType,
+    this.onTap,
+    this.readOnly = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      readOnly: readOnly,
       controller: controller,
       validator: validator,
       keyboardType: keyboardType,
@@ -28,6 +33,7 @@ class PrimaryInput extends StatelessWidget {
           vertical: 12,
         ),
       ),
+      onTap: onTap,
     );
   }
 }

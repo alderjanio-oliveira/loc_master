@@ -45,16 +45,13 @@ class VehicleDetailsPage extends GetView<VehicleDetailsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TextTitleAtom(title: vehicle.name),
+                    TextTitleAtom(title: vehicle.model),
                     const SizedBox(height: 12),
                     _buildDetailRow('Placa', vehicle.plate),
                     _buildDetailRow('Marca', vehicle.brand),
                     _buildDetailRow('Modelo', vehicle.model),
                     _buildDetailRow('Ano', vehicle.year.toString()),
-                    _buildDetailRow(
-                        'Diária', 'R\$${vehicle.dailyRate.toStringAsFixed(2)}'),
                     const SizedBox(height: 12),
-                    _buildStatusRow(vehicle),
                     IconButton(
                       onPressed: () {
                         Get.toNamed(Routes.MOTORCYCLE_REGISTER,
@@ -151,45 +148,6 @@ class VehicleDetailsPage extends GetView<VehicleDetailsController> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildStatusRow(Vehicle vehicle) {
-    final statusColor = {
-          'available': Colors.green,
-          'rented': Colors.orange,
-          'maintenance': Colors.red,
-        }[vehicle.status] ??
-        Colors.grey;
-
-    final conditionColor = {
-          'new': Colors.blue,
-          'good': Colors.green,
-          'regular': Colors.amber,
-          'bad': Colors.red,
-        }[vehicle.condition] ??
-        Colors.grey;
-
-    return Row(
-      children: [
-        Chip(
-          label: Text(
-            vehicle.status.toUpperCase(),
-            style: const TextStyle(fontSize: 12),
-          ),
-          backgroundColor: statusColor.withOpacity(0.2),
-          labelStyle: TextStyle(color: statusColor),
-        ),
-        const SizedBox(width: 8),
-        Chip(
-          label: Text(
-            vehicle.condition.toUpperCase(),
-            style: const TextStyle(fontSize: 12),
-          ),
-          backgroundColor: conditionColor.withOpacity(0.2),
-          labelStyle: TextStyle(color: conditionColor),
-        ),
-      ],
     );
   }
 

@@ -3,270 +3,6 @@
 part of 'database.dart';
 
 // ignore_for_file: type=lint
-class $TodoItemsTable extends TodoItems
-    with TableInfo<$TodoItemsTable, TodoItem> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $TodoItemsTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      hasAutoIncrement: true,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints:
-          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _titleMeta = const VerificationMeta('title');
-  @override
-  late final GeneratedColumn<String> title = GeneratedColumn<String>(
-      'title', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 6, maxTextLength: 32),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  static const VerificationMeta _contentMeta =
-      const VerificationMeta('content');
-  @override
-  late final GeneratedColumn<String> content = GeneratedColumn<String>(
-      'body', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  static const VerificationMeta _createdAtMeta =
-      const VerificationMeta('createdAt');
-  @override
-  late final GeneratedColumn<DateTime> createdAt = GeneratedColumn<DateTime>(
-      'created_at', aliasedName, true,
-      type: DriftSqlType.dateTime, requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns => [id, title, content, createdAt];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'todo_items';
-  @override
-  VerificationContext validateIntegrity(Insertable<TodoItem> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('title')) {
-      context.handle(
-          _titleMeta, title.isAcceptableOrUnknown(data['title']!, _titleMeta));
-    } else if (isInserting) {
-      context.missing(_titleMeta);
-    }
-    if (data.containsKey('body')) {
-      context.handle(_contentMeta,
-          content.isAcceptableOrUnknown(data['body']!, _contentMeta));
-    } else if (isInserting) {
-      context.missing(_contentMeta);
-    }
-    if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta,
-          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  TodoItem map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return TodoItem(
-      id: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      title: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}title'])!,
-      content: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}body'])!,
-      createdAt: attachedDatabase.typeMapping
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}created_at']),
-    );
-  }
-
-  @override
-  $TodoItemsTable createAlias(String alias) {
-    return $TodoItemsTable(attachedDatabase, alias);
-  }
-}
-
-class TodoItem extends DataClass implements Insertable<TodoItem> {
-  final int id;
-  final String title;
-  final String content;
-  final DateTime? createdAt;
-  const TodoItem(
-      {required this.id,
-      required this.title,
-      required this.content,
-      this.createdAt});
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
-    map['title'] = Variable<String>(title);
-    map['body'] = Variable<String>(content);
-    if (!nullToAbsent || createdAt != null) {
-      map['created_at'] = Variable<DateTime>(createdAt);
-    }
-    return map;
-  }
-
-  TodoItemsCompanion toCompanion(bool nullToAbsent) {
-    return TodoItemsCompanion(
-      id: Value(id),
-      title: Value(title),
-      content: Value(content),
-      createdAt: createdAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(createdAt),
-    );
-  }
-
-  factory TodoItem.fromJson(Map<String, dynamic> json,
-      {ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return TodoItem(
-      id: serializer.fromJson<int>(json['id']),
-      title: serializer.fromJson<String>(json['title']),
-      content: serializer.fromJson<String>(json['content']),
-      createdAt: serializer.fromJson<DateTime?>(json['createdAt']),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
-      'title': serializer.toJson<String>(title),
-      'content': serializer.toJson<String>(content),
-      'createdAt': serializer.toJson<DateTime?>(createdAt),
-    };
-  }
-
-  TodoItem copyWith(
-          {int? id,
-          String? title,
-          String? content,
-          Value<DateTime?> createdAt = const Value.absent()}) =>
-      TodoItem(
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        createdAt: createdAt.present ? createdAt.value : this.createdAt,
-      );
-  TodoItem copyWithCompanion(TodoItemsCompanion data) {
-    return TodoItem(
-      id: data.id.present ? data.id.value : this.id,
-      title: data.title.present ? data.title.value : this.title,
-      content: data.content.present ? data.content.value : this.content,
-      createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('TodoItem(')
-          ..write('id: $id, ')
-          ..write('title: $title, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode => Object.hash(id, title, content, createdAt);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is TodoItem &&
-          other.id == this.id &&
-          other.title == this.title &&
-          other.content == this.content &&
-          other.createdAt == this.createdAt);
-}
-
-class TodoItemsCompanion extends UpdateCompanion<TodoItem> {
-  final Value<int> id;
-  final Value<String> title;
-  final Value<String> content;
-  final Value<DateTime?> createdAt;
-  const TodoItemsCompanion({
-    this.id = const Value.absent(),
-    this.title = const Value.absent(),
-    this.content = const Value.absent(),
-    this.createdAt = const Value.absent(),
-  });
-  TodoItemsCompanion.insert({
-    this.id = const Value.absent(),
-    required String title,
-    required String content,
-    this.createdAt = const Value.absent(),
-  })  : title = Value(title),
-        content = Value(content);
-  static Insertable<TodoItem> custom({
-    Expression<int>? id,
-    Expression<String>? title,
-    Expression<String>? content,
-    Expression<DateTime>? createdAt,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (title != null) 'title': title,
-      if (content != null) 'body': content,
-      if (createdAt != null) 'created_at': createdAt,
-    });
-  }
-
-  TodoItemsCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? title,
-      Value<String>? content,
-      Value<DateTime?>? createdAt}) {
-    return TodoItemsCompanion(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      content: content ?? this.content,
-      createdAt: createdAt ?? this.createdAt,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<int>(id.value);
-    }
-    if (title.present) {
-      map['title'] = Variable<String>(title.value);
-    }
-    if (content.present) {
-      map['body'] = Variable<String>(content.value);
-    }
-    if (createdAt.present) {
-      map['created_at'] = Variable<DateTime>(createdAt.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('TodoItemsCompanion(')
-          ..write('id: $id, ')
-          ..write('title: $title, ')
-          ..write('content: $content, ')
-          ..write('createdAt: $createdAt')
-          ..write(')'))
-        .toString();
-  }
-}
-
 class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
   @override
   final GeneratedDatabase attachedDatabase;
@@ -281,14 +17,6 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
       requiredDuringInsert: false,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, false,
-      additionalChecks:
-          GeneratedColumn.checkTextLength(minTextLength: 2, maxTextLength: 50),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
   static const VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
@@ -323,29 +51,38 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
   static const VerificationMeta _yearMeta = const VerificationMeta('year');
   @override
   late final GeneratedColumn<int> year = GeneratedColumn<int>(
-      'year', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+      'year', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
       'status', aliasedName, false,
       type: DriftSqlType.string,
       requiredDuringInsert: false,
-      defaultValue: const Constant('available'));
-  static const VerificationMeta _conditionMeta =
-      const VerificationMeta('condition');
+      defaultValue: const Constant('Consórcio'));
+  static const VerificationMeta _acquisitionDateMeta =
+      const VerificationMeta('acquisitionDate');
   @override
-  late final GeneratedColumn<String> condition = GeneratedColumn<String>(
-      'condition', aliasedName, false,
-      type: DriftSqlType.string,
-      requiredDuringInsert: false,
-      defaultValue: const Constant('good'));
-  static const VerificationMeta _dailyRateMeta =
-      const VerificationMeta('dailyRate');
+  late final GeneratedColumn<DateTime> acquisitionDate =
+      GeneratedColumn<DateTime>('acquisition_date', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _manufacturedDateMeta =
+      const VerificationMeta('manufacturedDate');
   @override
-  late final GeneratedColumn<double> dailyRate = GeneratedColumn<double>(
-      'daily_rate', aliasedName, false,
-      type: DriftSqlType.double, requiredDuringInsert: true);
+  late final GeneratedColumn<DateTime> manufacturedDate =
+      GeneratedColumn<DateTime>('manufactured_date', aliasedName, true,
+          type: DriftSqlType.dateTime, requiredDuringInsert: false);
+  static const VerificationMeta _priceInstallmentMeta =
+      const VerificationMeta('priceInstallment');
+  @override
+  late final GeneratedColumn<double> priceInstallment = GeneratedColumn<double>(
+      'price_installment', aliasedName, true,
+      type: DriftSqlType.double, requiredDuringInsert: false);
+  static const VerificationMeta _amountMeta = const VerificationMeta('amount');
+  @override
+  late final GeneratedColumn<int> amount = GeneratedColumn<int>(
+      'amount', aliasedName, true,
+      type: DriftSqlType.int, requiredDuringInsert: false);
   static const VerificationMeta _imagePathMeta =
       const VerificationMeta('imagePath');
   @override
@@ -355,15 +92,16 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
   @override
   List<GeneratedColumn> get $columns => [
         id,
-        name,
         description,
         plate,
         brand,
         model,
         year,
         status,
-        condition,
-        dailyRate,
+        acquisitionDate,
+        manufacturedDate,
+        priceInstallment,
+        amount,
         imagePath
       ];
   @override
@@ -378,12 +116,6 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
       context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
-    } else if (isInserting) {
-      context.missing(_nameMeta);
     }
     if (data.containsKey('description')) {
       context.handle(
@@ -412,22 +144,32 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     if (data.containsKey('year')) {
       context.handle(
           _yearMeta, year.isAcceptableOrUnknown(data['year']!, _yearMeta));
-    } else if (isInserting) {
-      context.missing(_yearMeta);
     }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
     }
-    if (data.containsKey('condition')) {
-      context.handle(_conditionMeta,
-          condition.isAcceptableOrUnknown(data['condition']!, _conditionMeta));
+    if (data.containsKey('acquisition_date')) {
+      context.handle(
+          _acquisitionDateMeta,
+          acquisitionDate.isAcceptableOrUnknown(
+              data['acquisition_date']!, _acquisitionDateMeta));
     }
-    if (data.containsKey('daily_rate')) {
-      context.handle(_dailyRateMeta,
-          dailyRate.isAcceptableOrUnknown(data['daily_rate']!, _dailyRateMeta));
-    } else if (isInserting) {
-      context.missing(_dailyRateMeta);
+    if (data.containsKey('manufactured_date')) {
+      context.handle(
+          _manufacturedDateMeta,
+          manufacturedDate.isAcceptableOrUnknown(
+              data['manufactured_date']!, _manufacturedDateMeta));
+    }
+    if (data.containsKey('price_installment')) {
+      context.handle(
+          _priceInstallmentMeta,
+          priceInstallment.isAcceptableOrUnknown(
+              data['price_installment']!, _priceInstallmentMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
     }
     if (data.containsKey('image_path')) {
       context.handle(_imagePathMeta,
@@ -444,8 +186,6 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
     return Vehicle(
       id: attachedDatabase.typeMapping
           .read(DriftSqlType.int, data['${effectivePrefix}id']),
-      name: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}name'])!,
       description: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}description']),
       plate: attachedDatabase.typeMapping
@@ -455,13 +195,17 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
       model: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}model'])!,
       year: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}year'])!,
+          .read(DriftSqlType.int, data['${effectivePrefix}year']),
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
-      condition: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}condition'])!,
-      dailyRate: attachedDatabase.typeMapping
-          .read(DriftSqlType.double, data['${effectivePrefix}daily_rate'])!,
+      acquisitionDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}acquisition_date']),
+      manufacturedDate: attachedDatabase.typeMapping.read(
+          DriftSqlType.dateTime, data['${effectivePrefix}manufactured_date']),
+      priceInstallment: attachedDatabase.typeMapping.read(
+          DriftSqlType.double, data['${effectivePrefix}price_installment']),
+      amount: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}amount']),
       imagePath: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}image_path']),
     );
@@ -475,27 +219,29 @@ class $VehiclesTable extends Vehicles with TableInfo<$VehiclesTable, Vehicle> {
 
 class Vehicle extends DataClass implements Insertable<Vehicle> {
   final int? id;
-  final String name;
   final String? description;
   final String plate;
   final String brand;
   final String model;
-  final int year;
+  final int? year;
   final String status;
-  final String condition;
-  final double dailyRate;
+  final DateTime? acquisitionDate;
+  final DateTime? manufacturedDate;
+  final double? priceInstallment;
+  final int? amount;
   final String? imagePath;
   const Vehicle(
       {this.id,
-      required this.name,
       this.description,
       required this.plate,
       required this.brand,
       required this.model,
-      required this.year,
+      this.year,
       required this.status,
-      required this.condition,
-      required this.dailyRate,
+      this.acquisitionDate,
+      this.manufacturedDate,
+      this.priceInstallment,
+      this.amount,
       this.imagePath});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -503,17 +249,28 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     if (!nullToAbsent || id != null) {
       map['id'] = Variable<int>(id);
     }
-    map['name'] = Variable<String>(name);
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
     map['plate'] = Variable<String>(plate);
     map['brand'] = Variable<String>(brand);
     map['model'] = Variable<String>(model);
-    map['year'] = Variable<int>(year);
+    if (!nullToAbsent || year != null) {
+      map['year'] = Variable<int>(year);
+    }
     map['status'] = Variable<String>(status);
-    map['condition'] = Variable<String>(condition);
-    map['daily_rate'] = Variable<double>(dailyRate);
+    if (!nullToAbsent || acquisitionDate != null) {
+      map['acquisition_date'] = Variable<DateTime>(acquisitionDate);
+    }
+    if (!nullToAbsent || manufacturedDate != null) {
+      map['manufactured_date'] = Variable<DateTime>(manufacturedDate);
+    }
+    if (!nullToAbsent || priceInstallment != null) {
+      map['price_installment'] = Variable<double>(priceInstallment);
+    }
+    if (!nullToAbsent || amount != null) {
+      map['amount'] = Variable<int>(amount);
+    }
     if (!nullToAbsent || imagePath != null) {
       map['image_path'] = Variable<String>(imagePath);
     }
@@ -523,17 +280,25 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   VehiclesCompanion toCompanion(bool nullToAbsent) {
     return VehiclesCompanion(
       id: id == null && nullToAbsent ? const Value.absent() : Value(id),
-      name: Value(name),
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
       plate: Value(plate),
       brand: Value(brand),
       model: Value(model),
-      year: Value(year),
+      year: year == null && nullToAbsent ? const Value.absent() : Value(year),
       status: Value(status),
-      condition: Value(condition),
-      dailyRate: Value(dailyRate),
+      acquisitionDate: acquisitionDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(acquisitionDate),
+      manufacturedDate: manufacturedDate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(manufacturedDate),
+      priceInstallment: priceInstallment == null && nullToAbsent
+          ? const Value.absent()
+          : Value(priceInstallment),
+      amount:
+          amount == null && nullToAbsent ? const Value.absent() : Value(amount),
       imagePath: imagePath == null && nullToAbsent
           ? const Value.absent()
           : Value(imagePath),
@@ -545,15 +310,17 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return Vehicle(
       id: serializer.fromJson<int?>(json['id']),
-      name: serializer.fromJson<String>(json['name']),
       description: serializer.fromJson<String?>(json['description']),
       plate: serializer.fromJson<String>(json['plate']),
       brand: serializer.fromJson<String>(json['brand']),
       model: serializer.fromJson<String>(json['model']),
-      year: serializer.fromJson<int>(json['year']),
+      year: serializer.fromJson<int?>(json['year']),
       status: serializer.fromJson<String>(json['status']),
-      condition: serializer.fromJson<String>(json['condition']),
-      dailyRate: serializer.fromJson<double>(json['dailyRate']),
+      acquisitionDate: serializer.fromJson<DateTime?>(json['acquisitionDate']),
+      manufacturedDate:
+          serializer.fromJson<DateTime?>(json['manufacturedDate']),
+      priceInstallment: serializer.fromJson<double?>(json['priceInstallment']),
+      amount: serializer.fromJson<int?>(json['amount']),
       imagePath: serializer.fromJson<String?>(json['imagePath']),
     );
   }
@@ -562,48 +329,56 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<int?>(id),
-      'name': serializer.toJson<String>(name),
       'description': serializer.toJson<String?>(description),
       'plate': serializer.toJson<String>(plate),
       'brand': serializer.toJson<String>(brand),
       'model': serializer.toJson<String>(model),
-      'year': serializer.toJson<int>(year),
+      'year': serializer.toJson<int?>(year),
       'status': serializer.toJson<String>(status),
-      'condition': serializer.toJson<String>(condition),
-      'dailyRate': serializer.toJson<double>(dailyRate),
+      'acquisitionDate': serializer.toJson<DateTime?>(acquisitionDate),
+      'manufacturedDate': serializer.toJson<DateTime?>(manufacturedDate),
+      'priceInstallment': serializer.toJson<double?>(priceInstallment),
+      'amount': serializer.toJson<int?>(amount),
       'imagePath': serializer.toJson<String?>(imagePath),
     };
   }
 
   Vehicle copyWith(
           {Value<int?> id = const Value.absent(),
-          String? name,
           Value<String?> description = const Value.absent(),
           String? plate,
           String? brand,
           String? model,
-          int? year,
+          Value<int?> year = const Value.absent(),
           String? status,
-          String? condition,
-          double? dailyRate,
+          Value<DateTime?> acquisitionDate = const Value.absent(),
+          Value<DateTime?> manufacturedDate = const Value.absent(),
+          Value<double?> priceInstallment = const Value.absent(),
+          Value<int?> amount = const Value.absent(),
           Value<String?> imagePath = const Value.absent()}) =>
       Vehicle(
         id: id.present ? id.value : this.id,
-        name: name ?? this.name,
         description: description.present ? description.value : this.description,
         plate: plate ?? this.plate,
         brand: brand ?? this.brand,
         model: model ?? this.model,
-        year: year ?? this.year,
+        year: year.present ? year.value : this.year,
         status: status ?? this.status,
-        condition: condition ?? this.condition,
-        dailyRate: dailyRate ?? this.dailyRate,
+        acquisitionDate: acquisitionDate.present
+            ? acquisitionDate.value
+            : this.acquisitionDate,
+        manufacturedDate: manufacturedDate.present
+            ? manufacturedDate.value
+            : this.manufacturedDate,
+        priceInstallment: priceInstallment.present
+            ? priceInstallment.value
+            : this.priceInstallment,
+        amount: amount.present ? amount.value : this.amount,
         imagePath: imagePath.present ? imagePath.value : this.imagePath,
       );
   Vehicle copyWithCompanion(VehiclesCompanion data) {
     return Vehicle(
       id: data.id.present ? data.id.value : this.id,
-      name: data.name.present ? data.name.value : this.name,
       description:
           data.description.present ? data.description.value : this.description,
       plate: data.plate.present ? data.plate.value : this.plate,
@@ -611,8 +386,16 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
       model: data.model.present ? data.model.value : this.model,
       year: data.year.present ? data.year.value : this.year,
       status: data.status.present ? data.status.value : this.status,
-      condition: data.condition.present ? data.condition.value : this.condition,
-      dailyRate: data.dailyRate.present ? data.dailyRate.value : this.dailyRate,
+      acquisitionDate: data.acquisitionDate.present
+          ? data.acquisitionDate.value
+          : this.acquisitionDate,
+      manufacturedDate: data.manufacturedDate.present
+          ? data.manufacturedDate.value
+          : this.manufacturedDate,
+      priceInstallment: data.priceInstallment.present
+          ? data.priceInstallment.value
+          : this.priceInstallment,
+      amount: data.amount.present ? data.amount.value : this.amount,
       imagePath: data.imagePath.present ? data.imagePath.value : this.imagePath,
     );
   }
@@ -621,134 +404,151 @@ class Vehicle extends DataClass implements Insertable<Vehicle> {
   String toString() {
     return (StringBuffer('Vehicle(')
           ..write('id: $id, ')
-          ..write('name: $name, ')
           ..write('description: $description, ')
           ..write('plate: $plate, ')
           ..write('brand: $brand, ')
           ..write('model: $model, ')
           ..write('year: $year, ')
           ..write('status: $status, ')
-          ..write('condition: $condition, ')
-          ..write('dailyRate: $dailyRate, ')
+          ..write('acquisitionDate: $acquisitionDate, ')
+          ..write('manufacturedDate: $manufacturedDate, ')
+          ..write('priceInstallment: $priceInstallment, ')
+          ..write('amount: $amount, ')
           ..write('imagePath: $imagePath')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, name, description, plate, brand, model,
-      year, status, condition, dailyRate, imagePath);
+  int get hashCode => Object.hash(
+      id,
+      description,
+      plate,
+      brand,
+      model,
+      year,
+      status,
+      acquisitionDate,
+      manufacturedDate,
+      priceInstallment,
+      amount,
+      imagePath);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Vehicle &&
           other.id == this.id &&
-          other.name == this.name &&
           other.description == this.description &&
           other.plate == this.plate &&
           other.brand == this.brand &&
           other.model == this.model &&
           other.year == this.year &&
           other.status == this.status &&
-          other.condition == this.condition &&
-          other.dailyRate == this.dailyRate &&
+          other.acquisitionDate == this.acquisitionDate &&
+          other.manufacturedDate == this.manufacturedDate &&
+          other.priceInstallment == this.priceInstallment &&
+          other.amount == this.amount &&
           other.imagePath == this.imagePath);
 }
 
 class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   final Value<int?> id;
-  final Value<String> name;
   final Value<String?> description;
   final Value<String> plate;
   final Value<String> brand;
   final Value<String> model;
-  final Value<int> year;
+  final Value<int?> year;
   final Value<String> status;
-  final Value<String> condition;
-  final Value<double> dailyRate;
+  final Value<DateTime?> acquisitionDate;
+  final Value<DateTime?> manufacturedDate;
+  final Value<double?> priceInstallment;
+  final Value<int?> amount;
   final Value<String?> imagePath;
   const VehiclesCompanion({
     this.id = const Value.absent(),
-    this.name = const Value.absent(),
     this.description = const Value.absent(),
     this.plate = const Value.absent(),
     this.brand = const Value.absent(),
     this.model = const Value.absent(),
     this.year = const Value.absent(),
     this.status = const Value.absent(),
-    this.condition = const Value.absent(),
-    this.dailyRate = const Value.absent(),
+    this.acquisitionDate = const Value.absent(),
+    this.manufacturedDate = const Value.absent(),
+    this.priceInstallment = const Value.absent(),
+    this.amount = const Value.absent(),
     this.imagePath = const Value.absent(),
   });
   VehiclesCompanion.insert({
     this.id = const Value.absent(),
-    required String name,
     this.description = const Value.absent(),
     required String plate,
     required String brand,
     required String model,
-    required int year,
+    this.year = const Value.absent(),
     this.status = const Value.absent(),
-    this.condition = const Value.absent(),
-    required double dailyRate,
+    this.acquisitionDate = const Value.absent(),
+    this.manufacturedDate = const Value.absent(),
+    this.priceInstallment = const Value.absent(),
+    this.amount = const Value.absent(),
     this.imagePath = const Value.absent(),
-  })  : name = Value(name),
-        plate = Value(plate),
+  })  : plate = Value(plate),
         brand = Value(brand),
-        model = Value(model),
-        year = Value(year),
-        dailyRate = Value(dailyRate);
+        model = Value(model);
   static Insertable<Vehicle> custom({
     Expression<int>? id,
-    Expression<String>? name,
     Expression<String>? description,
     Expression<String>? plate,
     Expression<String>? brand,
     Expression<String>? model,
     Expression<int>? year,
     Expression<String>? status,
-    Expression<String>? condition,
-    Expression<double>? dailyRate,
+    Expression<DateTime>? acquisitionDate,
+    Expression<DateTime>? manufacturedDate,
+    Expression<double>? priceInstallment,
+    Expression<int>? amount,
     Expression<String>? imagePath,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (name != null) 'name': name,
       if (description != null) 'description': description,
       if (plate != null) 'plate': plate,
       if (brand != null) 'brand': brand,
       if (model != null) 'model': model,
       if (year != null) 'year': year,
       if (status != null) 'status': status,
-      if (condition != null) 'condition': condition,
-      if (dailyRate != null) 'daily_rate': dailyRate,
+      if (acquisitionDate != null) 'acquisition_date': acquisitionDate,
+      if (manufacturedDate != null) 'manufactured_date': manufacturedDate,
+      if (priceInstallment != null) 'price_installment': priceInstallment,
+      if (amount != null) 'amount': amount,
       if (imagePath != null) 'image_path': imagePath,
     });
   }
 
   VehiclesCompanion copyWith(
       {Value<int?>? id,
-      Value<String>? name,
       Value<String?>? description,
       Value<String>? plate,
       Value<String>? brand,
       Value<String>? model,
-      Value<int>? year,
+      Value<int?>? year,
       Value<String>? status,
-      Value<String>? condition,
-      Value<double>? dailyRate,
+      Value<DateTime?>? acquisitionDate,
+      Value<DateTime?>? manufacturedDate,
+      Value<double?>? priceInstallment,
+      Value<int?>? amount,
       Value<String?>? imagePath}) {
     return VehiclesCompanion(
       id: id ?? this.id,
-      name: name ?? this.name,
       description: description ?? this.description,
       plate: plate ?? this.plate,
       brand: brand ?? this.brand,
       model: model ?? this.model,
       year: year ?? this.year,
       status: status ?? this.status,
-      condition: condition ?? this.condition,
-      dailyRate: dailyRate ?? this.dailyRate,
+      acquisitionDate: acquisitionDate ?? this.acquisitionDate,
+      manufacturedDate: manufacturedDate ?? this.manufacturedDate,
+      priceInstallment: priceInstallment ?? this.priceInstallment,
+      amount: amount ?? this.amount,
       imagePath: imagePath ?? this.imagePath,
     );
   }
@@ -758,9 +558,6 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     final map = <String, Expression>{};
     if (id.present) {
       map['id'] = Variable<int>(id.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
     }
     if (description.present) {
       map['description'] = Variable<String>(description.value);
@@ -780,11 +577,17 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
-    if (condition.present) {
-      map['condition'] = Variable<String>(condition.value);
+    if (acquisitionDate.present) {
+      map['acquisition_date'] = Variable<DateTime>(acquisitionDate.value);
     }
-    if (dailyRate.present) {
-      map['daily_rate'] = Variable<double>(dailyRate.value);
+    if (manufacturedDate.present) {
+      map['manufactured_date'] = Variable<DateTime>(manufacturedDate.value);
+    }
+    if (priceInstallment.present) {
+      map['price_installment'] = Variable<double>(priceInstallment.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<int>(amount.value);
     }
     if (imagePath.present) {
       map['image_path'] = Variable<String>(imagePath.value);
@@ -796,15 +599,16 @@ class VehiclesCompanion extends UpdateCompanion<Vehicle> {
   String toString() {
     return (StringBuffer('VehiclesCompanion(')
           ..write('id: $id, ')
-          ..write('name: $name, ')
           ..write('description: $description, ')
           ..write('plate: $plate, ')
           ..write('brand: $brand, ')
           ..write('model: $model, ')
           ..write('year: $year, ')
           ..write('status: $status, ')
-          ..write('condition: $condition, ')
-          ..write('dailyRate: $dailyRate, ')
+          ..write('acquisitionDate: $acquisitionDate, ')
+          ..write('manufacturedDate: $manufacturedDate, ')
+          ..write('priceInstallment: $priceInstallment, ')
+          ..write('amount: $amount, ')
           ..write('imagePath: $imagePath')
           ..write(')'))
         .toString();
@@ -1394,6 +1198,13 @@ class $RentalsTable extends Rentals with TableInfo<$RentalsTable, Rental> {
       type: DriftSqlType.double,
       requiredDuringInsert: false,
       defaultValue: const Constant(0));
+  static const VerificationMeta _typeMeta = const VerificationMeta('type');
+  @override
+  late final GeneratedColumn<String> type = GeneratedColumn<String>(
+      'type', aliasedName, false,
+      type: DriftSqlType.string,
+      requiredDuringInsert: false,
+      defaultValue: const Constant('full'));
   static const VerificationMeta _statusMeta = const VerificationMeta('status');
   @override
   late final GeneratedColumn<String> status = GeneratedColumn<String>(
@@ -1416,6 +1227,7 @@ class $RentalsTable extends Rentals with TableInfo<$RentalsTable, Rental> {
         returnDate,
         totalValue,
         paidValue,
+        type,
         status,
         notes
       ];
@@ -1468,6 +1280,10 @@ class $RentalsTable extends Rentals with TableInfo<$RentalsTable, Rental> {
       context.handle(_paidValueMeta,
           paidValue.isAcceptableOrUnknown(data['paid_value']!, _paidValueMeta));
     }
+    if (data.containsKey('type')) {
+      context.handle(
+          _typeMeta, type.isAcceptableOrUnknown(data['type']!, _typeMeta));
+    }
     if (data.containsKey('status')) {
       context.handle(_statusMeta,
           status.isAcceptableOrUnknown(data['status']!, _statusMeta));
@@ -1501,6 +1317,8 @@ class $RentalsTable extends Rentals with TableInfo<$RentalsTable, Rental> {
           .read(DriftSqlType.double, data['${effectivePrefix}total_value']),
       paidValue: attachedDatabase.typeMapping
           .read(DriftSqlType.double, data['${effectivePrefix}paid_value'])!,
+      type: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}type'])!,
       status: attachedDatabase.typeMapping
           .read(DriftSqlType.string, data['${effectivePrefix}status'])!,
       notes: attachedDatabase.typeMapping
@@ -1523,6 +1341,7 @@ class Rental extends DataClass implements Insertable<Rental> {
   final DateTime? returnDate;
   final double? totalValue;
   final double paidValue;
+  final String type;
   final String status;
   final String? notes;
   const Rental(
@@ -1534,6 +1353,7 @@ class Rental extends DataClass implements Insertable<Rental> {
       this.returnDate,
       this.totalValue,
       required this.paidValue,
+      required this.type,
       required this.status,
       this.notes});
   @override
@@ -1555,6 +1375,7 @@ class Rental extends DataClass implements Insertable<Rental> {
       map['total_value'] = Variable<double>(totalValue);
     }
     map['paid_value'] = Variable<double>(paidValue);
+    map['type'] = Variable<String>(type);
     map['status'] = Variable<String>(status);
     if (!nullToAbsent || notes != null) {
       map['notes'] = Variable<String>(notes);
@@ -1580,6 +1401,7 @@ class Rental extends DataClass implements Insertable<Rental> {
           ? const Value.absent()
           : Value(totalValue),
       paidValue: Value(paidValue),
+      type: Value(type),
       status: Value(status),
       notes:
           notes == null && nullToAbsent ? const Value.absent() : Value(notes),
@@ -1598,6 +1420,7 @@ class Rental extends DataClass implements Insertable<Rental> {
       returnDate: serializer.fromJson<DateTime?>(json['returnDate']),
       totalValue: serializer.fromJson<double?>(json['totalValue']),
       paidValue: serializer.fromJson<double>(json['paidValue']),
+      type: serializer.fromJson<String>(json['type']),
       status: serializer.fromJson<String>(json['status']),
       notes: serializer.fromJson<String?>(json['notes']),
     );
@@ -1614,6 +1437,7 @@ class Rental extends DataClass implements Insertable<Rental> {
       'returnDate': serializer.toJson<DateTime?>(returnDate),
       'totalValue': serializer.toJson<double?>(totalValue),
       'paidValue': serializer.toJson<double>(paidValue),
+      'type': serializer.toJson<String>(type),
       'status': serializer.toJson<String>(status),
       'notes': serializer.toJson<String?>(notes),
     };
@@ -1628,6 +1452,7 @@ class Rental extends DataClass implements Insertable<Rental> {
           Value<DateTime?> returnDate = const Value.absent(),
           Value<double?> totalValue = const Value.absent(),
           double? paidValue,
+          String? type,
           String? status,
           Value<String?> notes = const Value.absent()}) =>
       Rental(
@@ -1639,6 +1464,7 @@ class Rental extends DataClass implements Insertable<Rental> {
         returnDate: returnDate.present ? returnDate.value : this.returnDate,
         totalValue: totalValue.present ? totalValue.value : this.totalValue,
         paidValue: paidValue ?? this.paidValue,
+        type: type ?? this.type,
         status: status ?? this.status,
         notes: notes.present ? notes.value : this.notes,
       );
@@ -1654,6 +1480,7 @@ class Rental extends DataClass implements Insertable<Rental> {
       totalValue:
           data.totalValue.present ? data.totalValue.value : this.totalValue,
       paidValue: data.paidValue.present ? data.paidValue.value : this.paidValue,
+      type: data.type.present ? data.type.value : this.type,
       status: data.status.present ? data.status.value : this.status,
       notes: data.notes.present ? data.notes.value : this.notes,
     );
@@ -1670,6 +1497,7 @@ class Rental extends DataClass implements Insertable<Rental> {
           ..write('returnDate: $returnDate, ')
           ..write('totalValue: $totalValue, ')
           ..write('paidValue: $paidValue, ')
+          ..write('type: $type, ')
           ..write('status: $status, ')
           ..write('notes: $notes')
           ..write(')'))
@@ -1678,7 +1506,7 @@ class Rental extends DataClass implements Insertable<Rental> {
 
   @override
   int get hashCode => Object.hash(id, vehicleId, renterId, startDate, endDate,
-      returnDate, totalValue, paidValue, status, notes);
+      returnDate, totalValue, paidValue, type, status, notes);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1691,6 +1519,7 @@ class Rental extends DataClass implements Insertable<Rental> {
           other.returnDate == this.returnDate &&
           other.totalValue == this.totalValue &&
           other.paidValue == this.paidValue &&
+          other.type == this.type &&
           other.status == this.status &&
           other.notes == this.notes);
 }
@@ -1704,6 +1533,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
   final Value<DateTime?> returnDate;
   final Value<double?> totalValue;
   final Value<double> paidValue;
+  final Value<String> type;
   final Value<String> status;
   final Value<String?> notes;
   const RentalsCompanion({
@@ -1715,6 +1545,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
     this.returnDate = const Value.absent(),
     this.totalValue = const Value.absent(),
     this.paidValue = const Value.absent(),
+    this.type = const Value.absent(),
     this.status = const Value.absent(),
     this.notes = const Value.absent(),
   });
@@ -1727,6 +1558,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
     this.returnDate = const Value.absent(),
     this.totalValue = const Value.absent(),
     this.paidValue = const Value.absent(),
+    this.type = const Value.absent(),
     this.status = const Value.absent(),
     this.notes = const Value.absent(),
   })  : vehicleId = Value(vehicleId),
@@ -1740,6 +1572,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
     Expression<DateTime>? returnDate,
     Expression<double>? totalValue,
     Expression<double>? paidValue,
+    Expression<String>? type,
     Expression<String>? status,
     Expression<String>? notes,
   }) {
@@ -1752,6 +1585,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
       if (returnDate != null) 'return_date': returnDate,
       if (totalValue != null) 'total_value': totalValue,
       if (paidValue != null) 'paid_value': paidValue,
+      if (type != null) 'type': type,
       if (status != null) 'status': status,
       if (notes != null) 'notes': notes,
     });
@@ -1766,6 +1600,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
       Value<DateTime?>? returnDate,
       Value<double?>? totalValue,
       Value<double>? paidValue,
+      Value<String>? type,
       Value<String>? status,
       Value<String?>? notes}) {
     return RentalsCompanion(
@@ -1777,6 +1612,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
       returnDate: returnDate ?? this.returnDate,
       totalValue: totalValue ?? this.totalValue,
       paidValue: paidValue ?? this.paidValue,
+      type: type ?? this.type,
       status: status ?? this.status,
       notes: notes ?? this.notes,
     );
@@ -1809,6 +1645,9 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
     if (paidValue.present) {
       map['paid_value'] = Variable<double>(paidValue.value);
     }
+    if (type.present) {
+      map['type'] = Variable<String>(type.value);
+    }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
     }
@@ -1829,6 +1668,7 @@ class RentalsCompanion extends UpdateCompanion<Rental> {
           ..write('returnDate: $returnDate, ')
           ..write('totalValue: $totalValue, ')
           ..write('paidValue: $paidValue, ')
+          ..write('type: $type, ')
           ..write('status: $status, ')
           ..write('notes: $notes')
           ..write(')'))
@@ -2730,7 +2570,6 @@ class EventsCompanion extends UpdateCompanion<Event> {
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(e);
   $AppDatabaseManager get managers => $AppDatabaseManager(this);
-  late final $TodoItemsTable todoItems = $TodoItemsTable(this);
   late final $VehiclesTable vehicles = $VehiclesTable(this);
   late final $RentersTable renters = $RentersTable(this);
   late final $RentalsTable rentals = $RentalsTable(this);
@@ -2741,177 +2580,35 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
-      [todoItems, vehicles, renters, rentals, payments, events];
+      [vehicles, renters, rentals, payments, events];
 }
 
-typedef $$TodoItemsTableCreateCompanionBuilder = TodoItemsCompanion Function({
-  Value<int> id,
-  required String title,
-  required String content,
-  Value<DateTime?> createdAt,
-});
-typedef $$TodoItemsTableUpdateCompanionBuilder = TodoItemsCompanion Function({
-  Value<int> id,
-  Value<String> title,
-  Value<String> content,
-  Value<DateTime?> createdAt,
-});
-
-class $$TodoItemsTableFilterComposer
-    extends Composer<_$AppDatabase, $TodoItemsTable> {
-  $$TodoItemsTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnFilters(column));
-
-  ColumnFilters<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnFilters(column));
-}
-
-class $$TodoItemsTableOrderingComposer
-    extends Composer<_$AppDatabase, $TodoItemsTable> {
-  $$TodoItemsTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<int> get id => $composableBuilder(
-      column: $table.id, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get title => $composableBuilder(
-      column: $table.title, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<String> get content => $composableBuilder(
-      column: $table.content, builder: (column) => ColumnOrderings(column));
-
-  ColumnOrderings<DateTime> get createdAt => $composableBuilder(
-      column: $table.createdAt, builder: (column) => ColumnOrderings(column));
-}
-
-class $$TodoItemsTableAnnotationComposer
-    extends Composer<_$AppDatabase, $TodoItemsTable> {
-  $$TodoItemsTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get title =>
-      $composableBuilder(column: $table.title, builder: (column) => column);
-
-  GeneratedColumn<String> get content =>
-      $composableBuilder(column: $table.content, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
-}
-
-class $$TodoItemsTableTableManager extends RootTableManager<
-    _$AppDatabase,
-    $TodoItemsTable,
-    TodoItem,
-    $$TodoItemsTableFilterComposer,
-    $$TodoItemsTableOrderingComposer,
-    $$TodoItemsTableAnnotationComposer,
-    $$TodoItemsTableCreateCompanionBuilder,
-    $$TodoItemsTableUpdateCompanionBuilder,
-    (TodoItem, BaseReferences<_$AppDatabase, $TodoItemsTable, TodoItem>),
-    TodoItem,
-    PrefetchHooks Function()> {
-  $$TodoItemsTableTableManager(_$AppDatabase db, $TodoItemsTable table)
-      : super(TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$TodoItemsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$TodoItemsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$TodoItemsTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            Value<String> title = const Value.absent(),
-            Value<String> content = const Value.absent(),
-            Value<DateTime?> createdAt = const Value.absent(),
-          }) =>
-              TodoItemsCompanion(
-            id: id,
-            title: title,
-            content: content,
-            createdAt: createdAt,
-          ),
-          createCompanionCallback: ({
-            Value<int> id = const Value.absent(),
-            required String title,
-            required String content,
-            Value<DateTime?> createdAt = const Value.absent(),
-          }) =>
-              TodoItemsCompanion.insert(
-            id: id,
-            title: title,
-            content: content,
-            createdAt: createdAt,
-          ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
-          prefetchHooksCallback: null,
-        ));
-}
-
-typedef $$TodoItemsTableProcessedTableManager = ProcessedTableManager<
-    _$AppDatabase,
-    $TodoItemsTable,
-    TodoItem,
-    $$TodoItemsTableFilterComposer,
-    $$TodoItemsTableOrderingComposer,
-    $$TodoItemsTableAnnotationComposer,
-    $$TodoItemsTableCreateCompanionBuilder,
-    $$TodoItemsTableUpdateCompanionBuilder,
-    (TodoItem, BaseReferences<_$AppDatabase, $TodoItemsTable, TodoItem>),
-    TodoItem,
-    PrefetchHooks Function()>;
 typedef $$VehiclesTableCreateCompanionBuilder = VehiclesCompanion Function({
   Value<int?> id,
-  required String name,
   Value<String?> description,
   required String plate,
   required String brand,
   required String model,
-  required int year,
+  Value<int?> year,
   Value<String> status,
-  Value<String> condition,
-  required double dailyRate,
+  Value<DateTime?> acquisitionDate,
+  Value<DateTime?> manufacturedDate,
+  Value<double?> priceInstallment,
+  Value<int?> amount,
   Value<String?> imagePath,
 });
 typedef $$VehiclesTableUpdateCompanionBuilder = VehiclesCompanion Function({
   Value<int?> id,
-  Value<String> name,
   Value<String?> description,
   Value<String> plate,
   Value<String> brand,
   Value<String> model,
-  Value<int> year,
+  Value<int?> year,
   Value<String> status,
-  Value<String> condition,
-  Value<double> dailyRate,
+  Value<DateTime?> acquisitionDate,
+  Value<DateTime?> manufacturedDate,
+  Value<double?> priceInstallment,
+  Value<int?> amount,
   Value<String?> imagePath,
 });
 
@@ -2947,9 +2644,6 @@ class $$VehiclesTableFilterComposer
   ColumnFilters<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnFilters(column));
-
   ColumnFilters<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnFilters(column));
 
@@ -2968,11 +2662,20 @@ class $$VehiclesTableFilterComposer
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<String> get condition => $composableBuilder(
-      column: $table.condition, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get acquisitionDate => $composableBuilder(
+      column: $table.acquisitionDate,
+      builder: (column) => ColumnFilters(column));
 
-  ColumnFilters<double> get dailyRate => $composableBuilder(
-      column: $table.dailyRate, builder: (column) => ColumnFilters(column));
+  ColumnFilters<DateTime> get manufacturedDate => $composableBuilder(
+      column: $table.manufacturedDate,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<double> get priceInstallment => $composableBuilder(
+      column: $table.priceInstallment,
+      builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<int> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get imagePath => $composableBuilder(
       column: $table.imagePath, builder: (column) => ColumnFilters(column));
@@ -3011,9 +2714,6 @@ class $$VehiclesTableOrderingComposer
   ColumnOrderings<int> get id => $composableBuilder(
       column: $table.id, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get name => $composableBuilder(
-      column: $table.name, builder: (column) => ColumnOrderings(column));
-
   ColumnOrderings<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => ColumnOrderings(column));
 
@@ -3032,11 +2732,20 @@ class $$VehiclesTableOrderingComposer
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<String> get condition => $composableBuilder(
-      column: $table.condition, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get acquisitionDate => $composableBuilder(
+      column: $table.acquisitionDate,
+      builder: (column) => ColumnOrderings(column));
 
-  ColumnOrderings<double> get dailyRate => $composableBuilder(
-      column: $table.dailyRate, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<DateTime> get manufacturedDate => $composableBuilder(
+      column: $table.manufacturedDate,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<double> get priceInstallment => $composableBuilder(
+      column: $table.priceInstallment,
+      builder: (column) => ColumnOrderings(column));
+
+  ColumnOrderings<int> get amount => $composableBuilder(
+      column: $table.amount, builder: (column) => ColumnOrderings(column));
 
   ColumnOrderings<String> get imagePath => $composableBuilder(
       column: $table.imagePath, builder: (column) => ColumnOrderings(column));
@@ -3053,9 +2762,6 @@ class $$VehiclesTableAnnotationComposer
   });
   GeneratedColumn<int> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => column);
 
   GeneratedColumn<String> get description => $composableBuilder(
       column: $table.description, builder: (column) => column);
@@ -3075,11 +2781,17 @@ class $$VehiclesTableAnnotationComposer
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
 
-  GeneratedColumn<String> get condition =>
-      $composableBuilder(column: $table.condition, builder: (column) => column);
+  GeneratedColumn<DateTime> get acquisitionDate => $composableBuilder(
+      column: $table.acquisitionDate, builder: (column) => column);
 
-  GeneratedColumn<double> get dailyRate =>
-      $composableBuilder(column: $table.dailyRate, builder: (column) => column);
+  GeneratedColumn<DateTime> get manufacturedDate => $composableBuilder(
+      column: $table.manufacturedDate, builder: (column) => column);
+
+  GeneratedColumn<double> get priceInstallment => $composableBuilder(
+      column: $table.priceInstallment, builder: (column) => column);
+
+  GeneratedColumn<int> get amount =>
+      $composableBuilder(column: $table.amount, builder: (column) => column);
 
   GeneratedColumn<String> get imagePath =>
       $composableBuilder(column: $table.imagePath, builder: (column) => column);
@@ -3130,54 +2842,58 @@ class $$VehiclesTableTableManager extends RootTableManager<
               $$VehiclesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback: ({
             Value<int?> id = const Value.absent(),
-            Value<String> name = const Value.absent(),
             Value<String?> description = const Value.absent(),
             Value<String> plate = const Value.absent(),
             Value<String> brand = const Value.absent(),
             Value<String> model = const Value.absent(),
-            Value<int> year = const Value.absent(),
+            Value<int?> year = const Value.absent(),
             Value<String> status = const Value.absent(),
-            Value<String> condition = const Value.absent(),
-            Value<double> dailyRate = const Value.absent(),
+            Value<DateTime?> acquisitionDate = const Value.absent(),
+            Value<DateTime?> manufacturedDate = const Value.absent(),
+            Value<double?> priceInstallment = const Value.absent(),
+            Value<int?> amount = const Value.absent(),
             Value<String?> imagePath = const Value.absent(),
           }) =>
               VehiclesCompanion(
             id: id,
-            name: name,
             description: description,
             plate: plate,
             brand: brand,
             model: model,
             year: year,
             status: status,
-            condition: condition,
-            dailyRate: dailyRate,
+            acquisitionDate: acquisitionDate,
+            manufacturedDate: manufacturedDate,
+            priceInstallment: priceInstallment,
+            amount: amount,
             imagePath: imagePath,
           ),
           createCompanionCallback: ({
             Value<int?> id = const Value.absent(),
-            required String name,
             Value<String?> description = const Value.absent(),
             required String plate,
             required String brand,
             required String model,
-            required int year,
+            Value<int?> year = const Value.absent(),
             Value<String> status = const Value.absent(),
-            Value<String> condition = const Value.absent(),
-            required double dailyRate,
+            Value<DateTime?> acquisitionDate = const Value.absent(),
+            Value<DateTime?> manufacturedDate = const Value.absent(),
+            Value<double?> priceInstallment = const Value.absent(),
+            Value<int?> amount = const Value.absent(),
             Value<String?> imagePath = const Value.absent(),
           }) =>
               VehiclesCompanion.insert(
             id: id,
-            name: name,
             description: description,
             plate: plate,
             brand: brand,
             model: model,
             year: year,
             status: status,
-            condition: condition,
-            dailyRate: dailyRate,
+            acquisitionDate: acquisitionDate,
+            manufacturedDate: manufacturedDate,
+            priceInstallment: priceInstallment,
+            amount: amount,
             imagePath: imagePath,
           ),
           withReferenceMapper: (p0) => p0
@@ -3693,6 +3409,7 @@ typedef $$RentalsTableCreateCompanionBuilder = RentalsCompanion Function({
   Value<DateTime?> returnDate,
   Value<double?> totalValue,
   Value<double> paidValue,
+  Value<String> type,
   Value<String> status,
   Value<String?> notes,
 });
@@ -3705,6 +3422,7 @@ typedef $$RentalsTableUpdateCompanionBuilder = RentalsCompanion Function({
   Value<DateTime?> returnDate,
   Value<double?> totalValue,
   Value<double> paidValue,
+  Value<String> type,
   Value<String> status,
   Value<String?> notes,
 });
@@ -3748,7 +3466,7 @@ final class $$RentalsTableReferences
 
   $$PaymentsTableProcessedTableManager get paymentsRefs {
     final manager = $$PaymentsTableTableManager($_db, $_db.payments)
-        .filter((f) => f.rentalId.id.sqlEquals($_itemColumn<int>('id')!!));
+        .filter((f) => f.rentalId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_paymentsRefsTable($_db));
     return ProcessedTableManager(
@@ -3762,7 +3480,7 @@ final class $$RentalsTableReferences
 
   $$EventsTableProcessedTableManager get eventsRefs {
     final manager = $$EventsTableTableManager($_db, $_db.events)
-        .filter((f) => f.rentalId.id.sqlEquals($_itemColumn<int>('id')!!));
+        .filter((f) => f.rentalId.id.sqlEquals($_itemColumn<int>('id')!));
 
     final cache = $_typedResult.readTableOrNull(_eventsRefsTable($_db));
     return ProcessedTableManager(
@@ -3796,6 +3514,9 @@ class $$RentalsTableFilterComposer
 
   ColumnFilters<double> get paidValue => $composableBuilder(
       column: $table.paidValue, builder: (column) => ColumnFilters(column));
+
+  ColumnFilters<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnFilters(column));
 
   ColumnFilters<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnFilters(column));
@@ -3913,6 +3634,9 @@ class $$RentalsTableOrderingComposer
   ColumnOrderings<double> get paidValue => $composableBuilder(
       column: $table.paidValue, builder: (column) => ColumnOrderings(column));
 
+  ColumnOrderings<String> get type => $composableBuilder(
+      column: $table.type, builder: (column) => ColumnOrderings(column));
+
   ColumnOrderings<String> get status => $composableBuilder(
       column: $table.status, builder: (column) => ColumnOrderings(column));
 
@@ -3986,6 +3710,9 @@ class $$RentalsTableAnnotationComposer
 
   GeneratedColumn<double> get paidValue =>
       $composableBuilder(column: $table.paidValue, builder: (column) => column);
+
+  GeneratedColumn<String> get type =>
+      $composableBuilder(column: $table.type, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
@@ -4108,6 +3835,7 @@ class $$RentalsTableTableManager extends RootTableManager<
             Value<DateTime?> returnDate = const Value.absent(),
             Value<double?> totalValue = const Value.absent(),
             Value<double> paidValue = const Value.absent(),
+            Value<String> type = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String?> notes = const Value.absent(),
           }) =>
@@ -4120,6 +3848,7 @@ class $$RentalsTableTableManager extends RootTableManager<
             returnDate: returnDate,
             totalValue: totalValue,
             paidValue: paidValue,
+            type: type,
             status: status,
             notes: notes,
           ),
@@ -4132,6 +3861,7 @@ class $$RentalsTableTableManager extends RootTableManager<
             Value<DateTime?> returnDate = const Value.absent(),
             Value<double?> totalValue = const Value.absent(),
             Value<double> paidValue = const Value.absent(),
+            Value<String> type = const Value.absent(),
             Value<String> status = const Value.absent(),
             Value<String?> notes = const Value.absent(),
           }) =>
@@ -4144,6 +3874,7 @@ class $$RentalsTableTableManager extends RootTableManager<
             returnDate: returnDate,
             totalValue: totalValue,
             paidValue: paidValue,
+            type: type,
             status: status,
             notes: notes,
           ),
@@ -5032,8 +4763,6 @@ typedef $$EventsTableProcessedTableManager = ProcessedTableManager<
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$TodoItemsTableTableManager get todoItems =>
-      $$TodoItemsTableTableManager(_db, _db.todoItems);
   $$VehiclesTableTableManager get vehicles =>
       $$VehiclesTableTableManager(_db, _db.vehicles);
   $$RentersTableTableManager get renters =>

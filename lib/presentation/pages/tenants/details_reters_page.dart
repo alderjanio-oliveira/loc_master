@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loc_master/config/utils.dart';
 import 'package:loc_master/presentation/atoms/inputs/primary_input.dart';
 import 'package:loc_master/presentation/atoms/text/text_title_atomo.dart';
 import 'package:loc_master/presentation/controllers/details_renters_controller.dart';
@@ -8,10 +9,12 @@ import 'package:loc_master/presentation/organisms/dialog_custom.dart';
 import 'package:loc_master/presentation/organisms/list/list_builder_organism.dart';
 
 class DetailsRetersPage extends GetView<DetailsRetersController> {
+  const DetailsRetersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('DetailsRetersPage')),
+      appBar: AppBar(title: const Text('DetailsRetersPage')),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +28,7 @@ class DetailsRetersPage extends GetView<DetailsRetersController> {
                         title: 'Renter Name: ${controller.renter.value.name}'),
                     SubTitleAtom(
                         subtitle: 'CNH: ${controller.renter.value.cnh}'),
-                    SizedBox(height: 8),
+                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -43,10 +46,10 @@ class DetailsRetersPage extends GetView<DetailsRetersController> {
                           children: [
                             Chip(
                               label: Text(controller.vehicle.value != null
-                                  ? 'Vehicle: ${controller.vehicle.value!.name} : ${controller.vehicle.value!.plate}'
+                                  ? 'Vehicle: ${controller.vehicle.value!.model} : ${controller.vehicle.value!.plate}'
                                   : 'No vehicle assigned'),
                             ),
-                            SizedBox(width: 15),
+                            const SizedBox(width: 15),
                             IconButton(
                               onPressed: () {
                                 if (controller.rental.value == null) {
@@ -71,7 +74,7 @@ class DetailsRetersPage extends GetView<DetailsRetersController> {
                           onPressed: () => (),
                           icon: Icon(Icons.edit, color: Colors.blue),
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         IconButton(
                           onPressed: () => (),
                           icon: Icon(Icons.delete, color: Colors.blue),
@@ -84,7 +87,7 @@ class DetailsRetersPage extends GetView<DetailsRetersController> {
                                   ? Colors.red
                                   : Colors.blue)),
                         ),
-                        SizedBox(width: 15),
+                        const SizedBox(width: 15),
                         IconButton(
                           onPressed: () => controller.eventsLoad(),
                           icon: Icon(Icons.menu_book_sharp, color: Colors.blue),
@@ -124,31 +127,6 @@ class PaymentSessionWidget extends StatelessWidget {
 
   const PaymentSessionWidget({super.key, required this.controller});
 
-  Future<DateTime?> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate:
-          DateTime.now().subtract(const Duration(days: 365)), // 1 ano atrás
-      lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
-            dialogTheme: DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    return picked;
-  }
-
   @override
   Widget build(BuildContext context) {
     if (controller.isLoading.value) {
@@ -181,7 +159,7 @@ class PaymentSessionWidget extends StatelessWidget {
                         controller: controller.paymentDate,
                         onTap: () async {
                           controller.selectedDate.value =
-                              await _selectDate(context);
+                              await Utils().selectDate(context);
                           controller.paymentDate.text =
                               controller.selectedDate.value?.toString() ?? '';
                         },
@@ -195,7 +173,7 @@ class PaymentSessionWidget extends StatelessWidget {
                   onCancel: () => Get.back(),
                 );
               }),
-          icon: Icon(Icons.add_circle_outline_sharp),
+          icon: const Icon(Icons.add_circle_outline_sharp),
         ),
         controller.payments.isEmpty
             ? const Text('No payments found for this renter.')
@@ -214,31 +192,6 @@ class EventSessionWidget extends StatelessWidget {
   final DetailsRetersController controller;
 
   const EventSessionWidget({super.key, required this.controller});
-
-  Future<DateTime?> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate:
-          DateTime.now().subtract(const Duration(days: 365)), // 1 ano atrás
-      lastDate: DateTime(2100),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            dialogBackgroundColor: Colors.white,
-            dialogTheme: DialogThemeData(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-            ),
-          ),
-          child: child!,
-        );
-      },
-    );
-
-    return picked;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -261,23 +214,20 @@ class EventSessionWidget extends StatelessWidget {
                         label: 'Description',
                         controller: controller.eventDescription,
                       ),
-                      SizedBox(height: 16),
-                      TextFormField(
+                      const SizedBox(height: 16),
+                      PrimaryInput(
+                        label: 'Date',
                         readOnly: true,
-                        decoration: const InputDecoration(
-                          labelText: 'Date',
-                          suffixIcon: Icon(Icons.calendar_today),
-                          border: OutlineInputBorder(),
-                        ),
                         controller: controller.eventDate,
                         onTap: () async {
                           controller.selectedEventDate.value =
-                              await _selectDate(context);
+                              await Utils().selectDate(context);
                           controller.eventDate.text =
                               controller.selectedEventDate.value?.toString() ??
                                   '';
                         },
                       ),
+                      const SizedBox(height: 16),
                     ],
                   ),
                   onPressed: () {
@@ -287,7 +237,7 @@ class EventSessionWidget extends StatelessWidget {
                   onCancel: () => Get.back(),
                 );
               }),
-          icon: Icon(Icons.add_circle_outline_sharp),
+          icon: const Icon(Icons.add_circle_outline_sharp),
         ),
         controller.events.isEmpty
             ? const Text('No events found for this renter.')
@@ -317,7 +267,7 @@ class VehicleSessionWidget extends StatelessWidget {
       children: [
         IconButton(
           onPressed: () {},
-          icon: Icon(Icons.add_circle_outline_sharp),
+          icon: const Icon(Icons.add_circle_outline_sharp),
         ),
         controller.vehicles.isEmpty
             ? const Text('No vehicles found for this renter.')
