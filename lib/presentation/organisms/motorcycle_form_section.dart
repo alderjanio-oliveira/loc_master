@@ -5,7 +5,6 @@ class MotorcycleFormSection extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController modelController;
   final TextEditingController plateController;
-  final TextEditingController dailyRateController;
   final TextEditingController manufacturerController;
   final TextEditingController descriptionController;
   final TextEditingController financialStatusController;
@@ -19,7 +18,6 @@ class MotorcycleFormSection extends StatelessWidget {
     required this.formKey,
     required this.modelController,
     required this.plateController,
-    required this.dailyRateController,
     required this.manufacturerController,
     required this.descriptionController,
     required this.financialStatusController,
@@ -42,7 +40,6 @@ class MotorcycleFormSection extends StatelessWidget {
               formKey: formKey,
               modelController: modelController,
               plateController: plateController,
-              dailyRateController: dailyRateController,
               manufacturerController: manufacturerController,
               descriptionController: descriptionController,
               financialStatusController: financialStatusController,

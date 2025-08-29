@@ -1,20 +1,11 @@
 import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
-import 'package:flutter/material.dart' show DateTimeRange;
 import 'package:path_provider/path_provider.dart';
 
 part 'database.g.dart';
 
-class TodoItems extends Table {
-  IntColumn get id => integer().autoIncrement()();
-  TextColumn get title => text().withLength(min: 6, max: 32)();
-  TextColumn get content => text().named('body')();
-  DateTimeColumn get createdAt => dateTime().nullable()();
-}
-
 class Vehicles extends Table {
   IntColumn get id => integer().autoIncrement().nullable()();
-  TextColumn get name => text().withLength(min: 2, max: 50)();
   TextColumn get description => text().nullable()();
   TextColumn get plate => text().withLength(min: 7, max: 8).unique()();
   TextColumn get brand => text().withLength(min: 2, max: 30)();
@@ -24,14 +15,11 @@ class Vehicles extends Table {
   // Quitado, Financiado, Consorcio
   TextColumn get status => text().withDefault(const Constant('Consórcio'))();
   DateTimeColumn get acquisitionDate => dateTime().nullable()();
+  DateTimeColumn get manufacturedDate => dateTime().nullable()();
 
-  RealColumn get priceInstallment => real().nullable()();
+  RealColumn get priceInstallment =>
+      real().named('price_installment').nullable()();
   IntColumn get amount => integer().nullable()();
-
-  // Condition: 'new', 'good', 'regular', 'bad'
-  TextColumn get condition => text().withDefault(const Constant('good'))();
-
-  RealColumn get dailyRate => real()();
   TextColumn get imagePath => text().nullable()();
 }
 
@@ -98,8 +86,7 @@ class Events extends Table {
   TextColumn get resolutionNotes => text().nullable()();
 }
 
-@DriftDatabase(
-    tables: [TodoItems, Vehicles, Renters, Rentals, Payments, Events])
+@DriftDatabase(tables: [Vehicles, Renters, Rentals, Payments, Events])
 class AppDatabase extends _$AppDatabase {
   // After generating code, this class needs to define a `schemaVersion` getter
   // and a constructor telling drift where the database should be stored.

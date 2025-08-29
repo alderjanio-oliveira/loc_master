@@ -10,30 +10,14 @@ class VehiclesService extends GetxService {
   VehiclesService({required this.database});
 
   Future<void> addOrUpdateVehicle(Vehicle vehicle) async {
-    // Simulate adding a vehicle to a database or API
-    print('Adding vehicle: $vehicle');
     try {
-      VehiclesCompanion vehicleModel = VehiclesCompanion(
-        id: vehicle.id != null
-            ? drift.Value(vehicle.id!)
-            : const drift.Value.absent(),
-        name: drift.Value(vehicle.name),
-        plate: drift.Value(vehicle.plate),
-        brand: drift.Value(vehicle.brand),
-        model: drift.Value(vehicle.model),
-        year: drift.Value(vehicle.year),
-        status: drift.Value(vehicle.status),
-        condition: const drift.Value('good'),
-        dailyRate: const drift.Value(0.0),
-      );
       if (vehicle.id != null) {
         await database.update(database.vehicles).replace(
-              vehicleModel,
+              vehicle,
             );
-        print('updated vehicle: $vehicle');
       } else {
         await database.into(database.vehicles).insert(
-              vehicleModel,
+              vehicle,
             );
         print('inserted vehicle: $vehicle');
       }

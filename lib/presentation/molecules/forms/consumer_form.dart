@@ -42,6 +42,7 @@ class ConsumerForm extends StatelessWidget {
           const SizedBox(height: 16),
           PrimaryInput(
             label: 'CPF',
+            keyboardType: TextInputType.number,
             controller: cpfController,
             validator: (value) {
               if (value == null || value.isEmpty) {

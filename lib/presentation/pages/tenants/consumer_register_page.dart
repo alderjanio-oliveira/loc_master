@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loc_master/presentation/controllers/consumer_register_controller.dart';
+import 'package:loc_master/presentation/controllers/tenants_controller.dart';
 import 'package:loc_master/presentation/organisms/consumer_form_section.dart';
 
-class ConsumerRegisterPage extends GetView<ConsumerRegisterController> {
+class ConsumerRegisterPage extends GetView<TenantsController> {
   ConsumerRegisterPage({super.key});
 
   // Crie a GlobalKey aqui, na página

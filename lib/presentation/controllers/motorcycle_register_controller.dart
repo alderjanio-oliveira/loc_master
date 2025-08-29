@@ -35,10 +35,11 @@ class MotorcycleRegisterController extends GetxController {
       manufacturerController.text = vehicle.value!.brand;
       describleController.text = vehicle.value!.description ?? '';
       plateController.text = vehicle.value!.plate;
-      dailyRateController.text = vehicle.value!.dailyRate.toString();
+      dailyRateController.text = vehicle.value!.amount.toString();
       financialStatusController.text = vehicle.value!.status ?? '';
-      instalmentController.text = vehicle.value!.dailyRate.toString();
-      priceInstallmentController.text = vehicle.value!.dailyRate.toString();
+      instalmentController.text = vehicle.value!.amount.toString();
+      priceInstallmentController.text =
+          vehicle.value!.priceInstallment.toString();
     }
   }
 
@@ -68,14 +69,15 @@ class MotorcycleRegisterController extends GetxController {
 
   buildVehicle() {
     return Vehicle(
-      name: modelController.text,
+      id: vehicle.value?.id == null ? null : vehicle.value!.id,
+      model: modelController.text,
       plate: plateController.text,
       brand: manufacturerController.text,
-      model: modelController.text,
+      description: describleController.text,
       year: 2025,
-      status: 'available',
-      condition: 'good',
-      dailyRate: 100.0,
+      status: financialStatusController.text,
+      amount: int.tryParse(instalmentController.text) ?? 0,
+      priceInstallment: double.tryParse(priceInstallmentController.text) ?? 0.0,
     );
   }
 }

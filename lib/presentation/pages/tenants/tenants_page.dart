@@ -5,8 +5,11 @@ import 'package:loc_master/presentation/organisms/list/list_builder_organism.dar
 import 'package:loc_master/presentation/routes/app_pages.dart';
 
 class TenantsPage extends GetView<TenantsController> {
+  const TenantsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    controller.load();
     return Scaffold(
       appBar: AppBar(
         title: Text('Locatários'),
@@ -23,8 +26,9 @@ class TenantsPage extends GetView<TenantsController> {
       body: SafeArea(
         child: Obx(() {
           if (controller.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
+          // return Text('numero de locatarios: ${controller.tenants.length}'); // Debug line
           return ListBuilderOrganism(
             list: controller.tenants,
             keyTitle: 'name',

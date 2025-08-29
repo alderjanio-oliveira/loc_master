@@ -7,7 +7,7 @@ import 'package:loc_master/presentation/controllers/home_controller.dart';
 class HomeBinding implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<AppDatabase>(() => AppDatabase());
+    Get.put<AppDatabase>(AppDatabase(), permanent: true);
     Get.lazyPut<RentersService>(
         () => RentersService(database: Get.find<AppDatabase>()));
     Get.lazyPut<VehiclesService>(

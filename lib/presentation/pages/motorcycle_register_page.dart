@@ -20,7 +20,6 @@ class MotorcycleRegisterPage extends GetView<MotorcycleRegisterController> {
           formKey: _formKey,
           modelController: controller.modelController,
           plateController: controller.plateController,
-          dailyRateController: controller.dailyRateController,
           manufacturerController: controller.manufacturerController,
           descriptionController: controller.describleController,
           financialStatusController: controller.financialStatusController,
