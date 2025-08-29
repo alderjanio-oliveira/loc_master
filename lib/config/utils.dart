@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Utils {
   Future<DateTime?> selectDate(BuildContext context) async {
@@ -23,5 +24,13 @@ class Utils {
     );
 
     return picked;
+  }
+
+  formatDate(dateStr) {
+    try {
+      return (DateFormat('dd/MM/yyyy').format(DateTime.parse(dateStr)));
+    } catch (e) {
+      return dateStr;
+    }
   }
 }
