@@ -14,7 +14,13 @@ class HomeController extends GetxController {
     required this.database,
   });
 
-  final _obj = ''.obs;
-  set obj(value) => this._obj.value = value;
-  get obj => this._obj.value;
+  @override
+  void onInit() async {
+    super.onInit();
+    await load();
+  }
+
+  Future<void> load() async {
+    // Carregue dados iniciais, se necessário
+  }
 }

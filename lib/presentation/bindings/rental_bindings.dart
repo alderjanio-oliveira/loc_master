@@ -5,9 +5,6 @@ import 'package:loc_master/presentation/controllers/rentals/rentals_controller.d
 class RentalBindings implements Bindings {
   @override
   void dependencies() {
-    if (!Get.isRegistered<AppDatabase>()) {
-      Get.lazyPut<AppDatabase>(() => AppDatabase());
-    }
     Get.lazyPut<RentalsController>(
       () => RentalsController(
         database: Get.find<AppDatabase>(),

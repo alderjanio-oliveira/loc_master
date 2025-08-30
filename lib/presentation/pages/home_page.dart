@@ -7,7 +7,7 @@ class HomePage extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('HomePage')),
+      appBar: AppBar(title: const Text('HomePage')),
       body: SafeArea(child: getButtons()),
     );
   }
@@ -20,11 +20,11 @@ getButtons() {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           MHomeButton(
-              icon: Icon(Icons.account_box_rounded),
+              icon: const Icon(Icons.account_box_rounded),
               onPressed: () => Get.toNamed('/tenants'),
               label: 'Locatário'),
           MHomeButton(
-              icon: Icon(Icons.car_rental),
+              icon: const Icon(Icons.car_rental),
               onPressed: () => Get.toNamed('/vehicles'),
               label: 'Veículo'),
         ],
@@ -34,11 +34,11 @@ getButtons() {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           MHomeButton(
-              icon: Icon(Icons.find_in_page),
+              icon: const Icon(Icons.find_in_page),
               onPressed: () => Get.toNamed('/search'),
               label: 'Consulta'),
           MHomeButton(
-              icon: Icon(Icons.payment),
+              icon: const Icon(Icons.payment),
               onPressed: () => Get.toNamed(Routes.RENTALS),
               label: 'Pagamento'),
         ],
@@ -48,11 +48,11 @@ getButtons() {
 }
 
 class MHomeButton extends StatelessWidget {
-  String? label;
+  final String? label;
   final String? tooltip;
   final Icon icon;
   final VoidCallback onPressed;
-  MHomeButton(
+  const MHomeButton(
       {super.key,
       required this.icon,
       required this.onPressed,
@@ -68,8 +68,8 @@ class MHomeButton extends StatelessWidget {
           icon: icon,
           iconSize: 50,
           color: Colors.blue,
-          tooltip: 'Tooltip',
-          padding: EdgeInsets.all(10),
+          tooltip: tooltip ?? 'Tooltip',
+          padding: const EdgeInsets.all(10),
           splashColor: Colors.blueAccent,
           highlightColor: Colors.blue[100],
           hoverColor: Colors.blue[50],
@@ -82,8 +82,8 @@ class MHomeButton extends StatelessWidget {
           enableFeedback: true,
           autofocus: false,
         ),
-        SizedBox(height: 10),
-        Text(label ?? 'Label', style: TextStyle(fontSize: 16)),
+        const SizedBox(height: 10),
+        Text(label ?? 'Label', style: const TextStyle(fontSize: 16)),
       ],
     );
   }

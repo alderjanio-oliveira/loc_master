@@ -6,9 +6,6 @@ import 'package:loc_master/presentation/controllers/vehicle_controller.dart';
 class VehiclesBinding implements Bindings {
   @override
   void dependencies() {
-    if (!Get.isRegistered<AppDatabase>()) {
-      Get.lazyPut<AppDatabase>(() => AppDatabase());
-    }
     Get.lazyPut<VehiclesService>(
       () => VehiclesService(
         database: Get.find<AppDatabase>(),

@@ -9,7 +9,6 @@ class TenantsPage extends GetView<TenantsController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.load();
     return Scaffold(
       appBar: AppBar(
         title: Text('Locatários'),
@@ -33,7 +32,7 @@ class TenantsPage extends GetView<TenantsController> {
             list: controller.tenants,
             keyTitle: 'name',
             keySubtitle: 'cnh',
-            onLongPress: (item) {
+            onPressedParam: (item) {
               Get.toNamed(Routes.DETAILS_RENTERS, arguments: item);
             },
           );

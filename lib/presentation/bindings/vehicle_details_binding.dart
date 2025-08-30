@@ -7,9 +7,6 @@ import 'package:loc_master/presentation/controllers/detail_vehicle_controller.da
 class VehicleDetailsBinding implements Bindings {
   @override
   void dependencies() {
-    if (!Get.isRegistered<AppDatabase>()) {
-      Get.lazyPut<AppDatabase>(() => AppDatabase());
-    }
     if (!Get.isRegistered<RentersService>()) {
       Get.lazyPut<RentersService>(
         () => RentersService(database: Get.find<AppDatabase>()),

@@ -11,7 +11,7 @@ import 'package:path/path.dart' as p; // <-- Add this line
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // APENAS PARA DESENVOLVIMENTO - REMOVA DEPOIS
-  // await deleteDatabase();
+  await deleteDatabase();
 
   runApp(const MyApp());
 }
