@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       defaultTransition: Transition.fade,
-      initialBinding: HomeBinding(),
       getPages: AppPages.routes,
     );
   }

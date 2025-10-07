@@ -6,7 +6,6 @@ import 'package:loc_master/presentation/routes/app_pages.dart';
 class VehiclesPage extends GetView<VehiclesController> {
   @override
   Widget build(BuildContext context) {
-    controller.loadVehicles();
     return Scaffold(
       appBar: AppBar(title: Text('VehiclesPage'), actions: [
         IconButton(

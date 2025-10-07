@@ -9,7 +9,6 @@ class TenantsPage extends GetView<TenantsController> {
 
   @override
   Widget build(BuildContext context) {
-    controller.load();
     return Scaffold(
       appBar: AppBar(
         title: Text('Locatários'),
@@ -17,7 +16,6 @@ class TenantsPage extends GetView<TenantsController> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              // Refresh the tenant list
               controller.load();
             },
           ),
@@ -28,12 +26,11 @@ class TenantsPage extends GetView<TenantsController> {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          // return Text('numero de locatarios: ${controller.tenants.length}'); // Debug line
           return ListBuilderOrganism(
             list: controller.tenants,
             keyTitle: 'name',
             keySubtitle: 'cnh',
-            onLongPress: (item) {
+            onPressedParam: (item) {
               Get.toNamed(Routes.DETAILS_RENTERS, arguments: item);
             },
           );

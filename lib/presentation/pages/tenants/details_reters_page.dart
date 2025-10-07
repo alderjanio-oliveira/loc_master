@@ -17,7 +17,7 @@ class DetailsRetersPage extends GetView<DetailsRetersController> {
       appBar: AppBar(title: const Text('DetailsRetersPage')),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Card(
               child: Padding(
@@ -175,14 +175,21 @@ class PaymentSessionWidget extends StatelessWidget {
               }),
           icon: const Icon(Icons.add_circle_outline_sharp),
         ),
-        controller.payments.isEmpty
-            ? const Text('No payments found for this renter.')
-            : ListBuilderOrganism(
-                list: controller.payments,
-                keyTitle: 'price',
-                keySubtitle: 'date',
-                isDate: true,
-              ), // ← Sem Expanded
+        Obx(
+          () {
+            if (controller.isLoading.value) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return controller.payments.isEmpty
+                ? const Text('No payments found for this renter.')
+                : ListBuilderOrganism(
+                    list: controller.payments,
+                    keyTitle: 'price',
+                    keySubtitle: 'date',
+                    isDate: true,
+                  );
+          },
+        ),
       ],
     );
   }
@@ -239,14 +246,19 @@ class EventSessionWidget extends StatelessWidget {
               }),
           icon: const Icon(Icons.add_circle_outline_sharp),
         ),
-        controller.events.isEmpty
-            ? const Text('No events found for this renter.')
-            : ListBuilderOrganism(
-                list: controller.events,
-                keyTitle: 'description',
-                keySubtitle: 'date',
-                isDate: true,
-              ),
+        Obx(() {
+          if (controller.isLoading.value) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          return controller.events.isEmpty
+              ? const Text('No events found for this renter.')
+              : ListBuilderOrganism(
+                  list: controller.events,
+                  keyTitle: 'description',
+                  keySubtitle: 'date',
+                  isDate: true,
+                );
+        })
       ],
     );
   }
@@ -263,21 +275,24 @@ class VehicleSessionWidget extends StatelessWidget {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return Column(
-      children: [
-        IconButton(
-          onPressed: () {},
-          icon: const Icon(Icons.add_circle_outline_sharp),
-        ),
-        controller.vehicles.isEmpty
-            ? const Text('No vehicles found for this renter.')
-            : ListBuilderOrganism(
-                list: controller.vehicles,
-                keyTitle: 'name',
-                keySubtitle: 'plate',
-                onLongPress: (element) => controller.chooseVehicle(element),
-              ),
-      ],
+    return Center(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.add_circle_outline_sharp),
+          ),
+          controller.vehicles.isEmpty
+              ? const Text('No vehicles found for this renter.')
+              : ListBuilderOrganism(
+                  list: controller.vehicles,
+                  keyTitle: 'name',
+                  keySubtitle: 'plate',
+                  onLongPress: (element) => controller.chooseVehicle(element),
+                ),
+        ],
+      ),
     );
   }
 }

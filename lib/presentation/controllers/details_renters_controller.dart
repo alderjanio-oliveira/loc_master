@@ -161,7 +161,7 @@ class DetailsRetersController extends GetxController {
   }
 
   Future<void> addPaymentSession() async {
-    isLoading.value = false;
+    isLoading.value = true;
     database.into(database.payments).insert(
           PaymentsCompanion(
             renterId: drift.Value(renter.value.id!),
@@ -176,7 +176,7 @@ class DetailsRetersController extends GetxController {
         );
     print('Adicionar pagamento para o locatário: ${renter.value.name}');
     await loadPayments();
-    isLoading.value = true;
+    isLoading.value = false;
   }
 
   void blockRenter() {

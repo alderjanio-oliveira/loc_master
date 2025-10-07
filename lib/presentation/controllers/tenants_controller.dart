@@ -9,6 +9,12 @@ class TenantsController extends GetxController {
 
   TenantsController(this.db);
 
+  @override
+  void onInit() {
+    super.onInit();
+    load();
+  }
+
   load() async {
     try {
       final result = await db.select(db.renters).get();

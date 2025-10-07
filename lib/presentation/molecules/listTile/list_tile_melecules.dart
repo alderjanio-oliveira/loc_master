@@ -5,8 +5,8 @@ class ListTileMelecules extends StatelessWidget {
   final VoidCallback? onTap;
   final String title;
   final String subtitle;
-  final IconData? leadingIcon;
-  final IconData? trailingIcon;
+  final Widget? leading;
+  final Widget? trailing;
   final VoidCallback? onLongPress;
 
   const ListTileMelecules({
@@ -14,8 +14,8 @@ class ListTileMelecules extends StatelessWidget {
     this.onTap,
     required this.title,
     required this.subtitle,
-    this.leadingIcon,
-    this.trailingIcon,
+    this.leading,
+    this.trailing,
     this.onLongPress,
   });
 
@@ -31,8 +31,8 @@ class ListTileMelecules extends StatelessWidget {
           ),
         ),
         subtitle: Chip(label: Text(subtitle)),
-        leading: leadingIcon != null ? Icon(leadingIcon) : null,
-        trailing: trailingIcon != null ? Icon(trailingIcon) : null,
+        leading: leading,
+        trailing: trailing,
         onTap: onTap,
         onLongPress: onLongPress,
       ),
