@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:drift/native.dart';
 import 'package:get/get.dart';
 import 'package:loc_master/data/database/database.dart';
-import 'package:drift/drift.dart' as drift;
 
 class VehiclesService extends GetxService {
   final AppDatabase database;

@@ -99,11 +99,9 @@ class AppDatabase extends _$AppDatabase {
     return driftDatabase(
       name: 'my_database',
       native: const DriftNativeOptions(
-        // By default, `driftDatabase` from `package:drift_flutter` stores the
-        // database files in `getApplicationDocumentsDirectory()`.
         databaseDirectory: getApplicationSupportDirectory,
+        shareAcrossIsolates: true,
       ),
-      // If you need web support, see https://drift.simonbinder.eu/platforms/web/
     );
   }
 

@@ -16,7 +16,6 @@ class TenantsPage extends GetView<TenantsController> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              // Refresh the tenant list
               controller.load();
             },
           ),
@@ -27,7 +26,6 @@ class TenantsPage extends GetView<TenantsController> {
           if (controller.isLoading.value) {
             return const Center(child: CircularProgressIndicator());
           }
-          // return Text('numero de locatarios: ${controller.tenants.length}'); // Debug line
           return ListBuilderOrganism(
             list: controller.tenants,
             keyTitle: 'name',

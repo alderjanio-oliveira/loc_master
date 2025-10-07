@@ -17,7 +17,9 @@ class HomeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    await load();
+    Future.microtask(() async {
+      await load();
+    });
   }
 
   Future<void> load() async {

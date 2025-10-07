@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:loc_master/presentation/organisms/list/list_builder_organism.dart';
 
 class Utils {
   Future<DateTime?> selectDate(BuildContext context) async {
@@ -32,5 +34,22 @@ class Utils {
     } catch (e) {
       return dateStr;
     }
+  }
+
+  buildList<T>({
+    required ListBuilderOrganism listBuildElement,
+    required List<T> items,
+    bool isLoading = false,
+  }) {
+    Obx(
+      () {
+        if (isLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        return items.isEmpty
+            ? const Text('No payments found for this renter.')
+            : listBuildElement;
+      },
+    );
   }
 }
