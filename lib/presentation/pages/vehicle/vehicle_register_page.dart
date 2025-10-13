@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/motorcycle_register_controller.dart';
-import '../organisms/motorcycle_form_section.dart';
+import '../../controllers/motorcycle_register_controller.dart';
+import '../../organisms/motorcycle_form_section.dart';
 
-class MotorcycleRegisterPage extends GetView<MotorcycleRegisterController> {
-  MotorcycleRegisterPage({super.key});
+class VehicleRegisterPage extends GetView<MotorcycleRegisterController> {
+  VehicleRegisterPage({super.key});
 
   // Crie a GlobalKey aqui, na página
   final _formKey = GlobalKey<FormState>();

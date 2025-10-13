@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:loc_master/data/database/database.dart';
 import 'package:loc_master/presentation/atoms/text/text_title_atomo.dart';
 import 'package:loc_master/presentation/controllers/detail_vehicle_controller.dart';
 import 'package:loc_master/presentation/organisms/dialog_custom.dart';

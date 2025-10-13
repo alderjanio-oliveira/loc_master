@@ -1,0 +1,15 @@
+final Map<String, String> enUs = {
+  'rentals': 'Rentals',
+  'tenant': 'Tenant',
+  'tenants': 'Tenants',
+  'landlord': 'Landlord',
+  'vehicles': 'Vehicles',
+  'payments': 'Payments',
+  'blocked': 'Blocked',
+  'name': 'Name',
+  'description': 'Description',
+  'driver_license': 'Driver’s License',
+  'home': 'Home',
+  'search': 'Search',
+  'vehicle': 'Vehicle',
+};

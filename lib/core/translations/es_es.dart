@@ -1,0 +1,15 @@
+final Map<String, String> esEs = {
+  'rentals': 'Alquileres',
+  'tenant': 'Arrendatario',
+  'tenants': 'Arrendatarios',
+  'landlord': 'Arrendador',
+  'vehicles': 'Vehículos',
+  'payments': 'Pagos',
+  'blocked': 'Bloqueado',
+  'name': 'Nombre',
+  'description': 'Descripción',
+  'driver_license': 'Licencia de Conducir',
+  'home': 'Inicio',
+  'search': 'Buscar',
+  'vehicle': 'Vehículo',
+};

@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:loc_master/presentation/controllers/tenants_controller.dart';
 import 'package:loc_master/presentation/organisms/consumer_form_section.dart';
 
-class ConsumerRegisterPage extends GetView<TenantsController> {
-  ConsumerRegisterPage({super.key});
+class TenantRegisterPage extends GetView<TenantsController> {
+  TenantRegisterPage({super.key});
 
   // Crie a GlobalKey aqui, na página
   final _formKey = GlobalKey<FormState>();

@@ -1,0 +1,15 @@
+final Map<String, String> ptBr = {
+  'rentals': 'Aluguéis',
+  'tenant': 'Locatário',
+  'tenants': 'Locatários',
+  'landlord': 'Locador',
+  'vehicles': 'Veículos',
+  'payments': 'Pagamentos',
+  'blocked': 'Bloqueado',
+  'name': 'Nome',
+  'description': 'Descrição',
+  'driver_license': 'CNH',
+  'home': 'Início',
+  'search': 'Consulta',
+  'vehicle': 'Veículo',
+};

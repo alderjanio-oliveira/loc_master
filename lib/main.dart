@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:loc_master/core/translations/app_translations.dart';
 import 'package:loc_master/data/database/database.dart';
 import 'package:loc_master/presentation/bindings/home_bindings.dart';
 import 'package:loc_master/presentation/routes/app_pages.dart';
@@ -33,6 +34,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: Routes.HOME,
+      translations: AppTranslations(),
+      locale: const Locale('en', 'US'),
+      fallbackLocale: const Locale('en', 'US'),
       theme: ThemeData(
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,

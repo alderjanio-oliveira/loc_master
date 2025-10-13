@@ -9,22 +9,21 @@ import 'package:loc_master/presentation/bindings/vehicle_bindings.dart';
 import 'package:loc_master/presentation/bindings/vehicle_details_binding.dart';
 import 'package:loc_master/presentation/bindings/vehicle_register_binding.dart';
 import 'package:loc_master/presentation/organisms/renters/search_page.dart';
-import 'package:loc_master/presentation/pages/home_page.dart';
+import 'package:loc_master/presentation/pages/home/home_page.dart';
 import 'package:loc_master/presentation/pages/rentals/retals_page.dart';
-import 'package:loc_master/presentation/pages/tenants/consumer_register_page.dart';
-import 'package:loc_master/presentation/pages/tenants/details_reters_page.dart';
+import 'package:loc_master/presentation/pages/tenants/tenant_register_page.dart';
+import 'package:loc_master/presentation/pages/tenants/tenant_details_page.dart';
 import 'package:loc_master/presentation/pages/tenants/tenants_page.dart';
 import 'package:loc_master/presentation/pages/vehicle/vehicle_datails.dart';
 import 'package:loc_master/presentation/pages/vehicle/vehicle_page.dart';
-import '../pages/motorcycle_register_page.dart';
-
+import 'package:loc_master/presentation/pages/vehicle/vehicle_register_page.dart';
 part 'app_routes.dart';
 
 class AppPages {
   static final routes = [
     GetPage(
       name: Routes.MOTORCYCLE_REGISTER,
-      page: () => MotorcycleRegisterPage(),
+      page: () => VehicleRegisterPage(),
       binding: MotorcycleRegisterBinding(),
     ),
     GetPage(
@@ -49,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.TENANT_REGISTER,
-      page: () => ConsumerRegisterPage(),
+      page: () => TenantRegisterPage(),
       binding: TenantRegisterBinding(),
     ),
     GetPage(
@@ -64,7 +63,7 @@ class AppPages {
     ),
     GetPage(
       name: Routes.DETAILS_RENTERS,
-      page: () => DetailsRetersPage(),
+      page: () => TenantDetailsPage(),
       binding: DetailsRetersBinding(),
     ),
   ];
