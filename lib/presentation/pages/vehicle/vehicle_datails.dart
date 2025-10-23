@@ -53,7 +53,7 @@ class VehicleDetailsPage extends GetView<VehicleDetailsController> {
                     const SizedBox(height: 12),
                     IconButton(
                       onPressed: () {
-                        Get.toNamed(Routes.MOTORCYCLE_REGISTER,
+                        Get.toNamed(Routes.motorcycleRegister,
                             arguments: vehicle);
                       },
                       icon: const Icon(Icons.edit),

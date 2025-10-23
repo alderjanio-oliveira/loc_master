@@ -4,6 +4,8 @@ import 'package:loc_master/presentation/controllers/vehicle_controller.dart';
 import 'package:loc_master/presentation/routes/app_pages.dart';
 
 class VehiclesPage extends GetView<VehiclesController> {
+  const VehiclesPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,10 +38,9 @@ class VehiclesPage extends GetView<VehiclesController> {
                       Text('Plate: ${vehicle.plate} Status: ${vehicle.status}'),
                   onTap: () {
                     Get.toNamed(
-                      Routes.VEHICLE_DETAILS,
+                      Routes.vehicleDetails,
                       arguments: vehicle,
                     );
-                    print('Tapped on vehicle: ${vehicle.model}');
                   },
                 );
               },
@@ -49,7 +50,7 @@ class VehiclesPage extends GetView<VehiclesController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(Routes.MOTORCYCLE_REGISTER);
+          Get.toNamed(Routes.motorcycleRegister);
         },
         child: Icon(Icons.add),
       ),

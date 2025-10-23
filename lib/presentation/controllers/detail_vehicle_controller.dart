@@ -26,9 +26,8 @@ class VehicleDetailsController extends GetxController {
 
   Future<void> loadRenters() async {
     try {
-      renters.value = await rentersService.loadRenter();
-
       isLoading.value = true;
+      renters.value = await rentersService.loadRenter();
     } catch (e) {
       print("Erro ao carregar renters: $e");
     } finally {

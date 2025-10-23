@@ -54,16 +54,6 @@ class DetailsRetersController extends GetxController {
   Future<void> loadRental() async {
     isLoading.value = true;
     rental.value = await rentalService.getByRenterId(renter.value.id!);
-
-    final data = await rentalService.load();
-    print(data);
-
-    if (rental.value == null) {
-      print('No rental found for renter: ${renter.value.name}');
-    } else {
-      print('Rental found for renter: ${renter.value.name}');
-    }
-    isLoading.value = false;
   }
 
   Future<void> deleteRental(Rental rental) async {
@@ -135,7 +125,6 @@ class DetailsRetersController extends GetxController {
   Future<void> addEventSession() async {
     isLoading.value = true;
     await database.into(database.events).insert(_buildEvent());
-    print('Adicionar evento para o locatário: ${renter.value.name}');
     await loadEvents();
     isLoading.value = false;
   }
@@ -146,7 +135,6 @@ class DetailsRetersController extends GetxController {
           ..where((tbl) => tbl.renterId.equals(renter.value.id!)))
         .get();
 
-    print(events.value);
     isLoading.value = false;
   }
 
@@ -156,7 +144,6 @@ class DetailsRetersController extends GetxController {
           ..where((tbl) => tbl.renterId.equals(renter.value.id!)))
         .get();
 
-    print(payments.value);
     isLoading.value = false;
   }
 
@@ -174,7 +161,6 @@ class DetailsRetersController extends GetxController {
             price: drift.Value(double.tryParse(paymentPrice.text) ?? 0.0),
           ),
         );
-    print('Adicionar pagamento para o locatário: ${renter.value.name}');
     await loadPayments();
     isLoading.value = false;
   }
@@ -198,17 +184,14 @@ class DetailsRetersController extends GetxController {
 
   Future<void> eventsLoad() async {
     updateSessions('event');
-    print('Load events: $eventSession');
   }
 
   Future<void> paymentsLoad() async {
     updateSessions('payment');
-    print('Load payments: $paymentSession');
   }
 
   Future<void> vehicleLoadSession() async {
     updateSessions('vehicle');
-    print('Load vehicles: $vehicleSession');
   }
 
   Future<void> delete() async {

@@ -18,7 +18,6 @@ class MotorcycleRegisterController extends GetxController {
     initialLoad();
   }
 
-  // Remova a GlobalKey daqui e crie na página
   final modelController = TextEditingController();
   final manufacturerController = TextEditingController();
   final describleController = TextEditingController();
@@ -36,7 +35,7 @@ class MotorcycleRegisterController extends GetxController {
       describleController.text = vehicle.value!.description ?? '';
       plateController.text = vehicle.value!.plate;
       dailyRateController.text = vehicle.value!.amount.toString();
-      financialStatusController.text = vehicle.value!.status ?? '';
+      financialStatusController.text = vehicle.value?.status ?? '';
       instalmentController.text = vehicle.value!.amount.toString();
       priceInstallmentController.text =
           vehicle.value!.priceInstallment.toString();

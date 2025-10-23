@@ -31,14 +31,14 @@ class TenantsPage extends GetView<TenantsController> {
             keyTitle: 'name',
             keySubtitle: 'cnh',
             onPressedParam: (item) {
-              Get.toNamed(Routes.DETAILS_RENTERS, arguments: item);
+              Get.toNamed(Routes.detailsRenters, arguments: item);
             },
           );
         }),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed(Routes.TENANT_REGISTER);
+          Get.toNamed(Routes.tenantRegister);
         },
         child: Icon(Icons.add),
       ),

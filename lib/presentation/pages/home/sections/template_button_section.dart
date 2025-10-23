@@ -17,28 +17,27 @@ class TemplateButtonSection extends StatelessWidget {
         TwoButtonLine(
           firstButton: MLabelButton(
               icon: const Icon(Icons.account_box_rounded),
-              onPressed: () => Get.toNamed('/tenants'),
+              onPressed: () => Get.toNamed(Routes.tenants),
               label: 'tenant'.tr),
           secondButton: MLabelButton(
               icon: const Icon(Icons.car_rental),
-              onPressed: () => Get.toNamed('/vehicles'),
+              onPressed: () => Get.toNamed(Routes.vehicles),
               label: 'vehicle'.tr),
         ),
         SizedBox(height: 20),
         TwoButtonLine(
           firstButton: MLabelButton(
             icon: const Icon(Icons.find_in_page),
-            onPressed: () => Get.toNamed('/search'),
+            onPressed: () => Get.toNamed(Routes.search),
             label: 'search'.tr,
           ),
           secondButton: MLabelButton(
             icon: const Icon(Icons.payment),
-            onPressed: () => Get.toNamed(Routes.RENTALS),
+            onPressed: () => Get.toNamed(Routes.rentals),
             label: 'payments'.tr,
           ),
         ),
       ],
     );
-    ;
   }
 }

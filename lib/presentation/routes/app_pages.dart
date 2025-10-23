@@ -22,47 +22,47 @@ part 'app_routes.dart';
 class AppPages {
   static final routes = [
     GetPage(
-      name: Routes.MOTORCYCLE_REGISTER,
+      name: Routes.motorcycleRegister,
       page: () => VehicleRegisterPage(),
       binding: MotorcycleRegisterBinding(),
     ),
     GetPage(
-      name: Routes.HOME,
+      name: Routes.home,
       page: () => HomePage(),
       binding: HomeBinding(),
     ),
     GetPage(
-      name: Routes.TENANTS,
+      name: Routes.tenants,
       page: () => TenantsPage(),
       binding: TenantsBinding(),
     ),
     GetPage(
-      name: Routes.VEHICLES,
+      name: Routes.vehicles,
       page: () => VehiclesPage(),
       binding: VehiclesBinding(),
     ),
     GetPage(
-      name: Routes.VEHICLE_DETAILS,
+      name: Routes.vehicleDetails,
       page: () => VehicleDetailsPage(),
       binding: VehicleDetailsBinding(),
     ),
     GetPage(
-      name: Routes.TENANT_REGISTER,
+      name: Routes.tenantRegister,
       page: () => TenantRegisterPage(),
       binding: TenantRegisterBinding(),
     ),
     GetPage(
-      name: Routes.SEARCH_PAGE,
+      name: Routes.search,
       page: () => SearchPage(),
       binding: SearchBindings(),
     ),
     GetPage(
-      name: Routes.RENTALS,
+      name: Routes.rentals,
       page: () => RentalsPage(),
       binding: RentalBindings(),
     ),
     GetPage(
-      name: Routes.DETAILS_RENTERS,
+      name: Routes.detailsRenters,
       page: () => TenantDetailsPage(),
       binding: DetailsRetersBinding(),
     ),
