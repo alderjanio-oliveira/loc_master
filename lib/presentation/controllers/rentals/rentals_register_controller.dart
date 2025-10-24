@@ -68,10 +68,9 @@ class RentalRegisterController extends GetxController {
       vehicleId: drift.Value(selectedVehicleId.value),
       renterId: drift.Value(selectedTenantId.value),
       startDate: drift.Value(DateTime.parse(rentalDueDayController.text)),
-      endDate: drift.Value(DateTime.now().add(Duration(days: 7))),
       totalValue: drift.Value(1 * 7),
       paidValue: drift.Value(double.parse(rentalValueController.text)),
-      type: drift.Value('weekly'),
+      type: drift.Value(rentalPeriodController.text),
       status: drift.Value('active'),
     );
   }
