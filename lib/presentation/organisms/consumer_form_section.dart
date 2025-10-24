@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loc_master/presentation/molecules/forms/consumer_form.dart';
+import 'package:loc_master/presentation/molecules/forms/renter_form.dart';
 
 class ComsumercycleFormSection extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -31,7 +31,7 @@ class ComsumercycleFormSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ConsumerForm(
+            RenterForm(
               formKey: formKey,
               nameController: nomeController,
               cpfController: cpfController,

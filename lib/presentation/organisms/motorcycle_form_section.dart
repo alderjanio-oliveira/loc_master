@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loc_master/presentation/molecules/forms/motorcycle_form.dart';
+import 'package:loc_master/presentation/molecules/forms/vehicle_form.dart';
 
 class MotorcycleFormSection extends StatelessWidget {
   final GlobalKey<FormState> formKey;
@@ -36,7 +36,7 @@ class MotorcycleFormSection extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MotorcycleForm(
+            VehicleForm(
               formKey: formKey,
               modelController: modelController,
               plateController: plateController,

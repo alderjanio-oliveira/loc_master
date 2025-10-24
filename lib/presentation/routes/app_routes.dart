@@ -12,5 +12,6 @@ abstract class Routes {
   static const String search = '/search';
   static const String rentals = '/rentals';
   static const String detailsRenters = '/details/renters';
+  static const String rentalRegister = '/rental/register';
   // ... outras rotas
 }

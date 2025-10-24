@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../atoms/inputs/primary_input.dart';
 import '../../atoms/buttons/primary_button.dart';
 
-class MotorcycleForm extends StatelessWidget {
+class VehicleForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController modelController;
   final TextEditingController plateController;
@@ -14,7 +14,7 @@ class MotorcycleForm extends StatelessWidget {
   final VoidCallback onSubmit;
   final bool isLoading;
 
-  const MotorcycleForm({
+  const VehicleForm({
     super.key,
     required this.formKey,
     required this.modelController,

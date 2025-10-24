@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../../atoms/inputs/primary_input.dart';
 import '../../atoms/buttons/primary_button.dart';
 
-class ConsumerForm extends StatelessWidget {
+class RenterForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController nameController;
   final TextEditingController cpfController;
@@ -12,7 +12,7 @@ class ConsumerForm extends StatelessWidget {
   final VoidCallback onSubmit;
   final bool isLoading;
 
-  const ConsumerForm({
+  const RenterForm({
     super.key,
     required this.formKey,
     required this.nameController,

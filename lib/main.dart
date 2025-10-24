@@ -3,8 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loc_master/core/translations/app_translations.dart';
-import 'package:loc_master/data/database/database.dart';
-import 'package:loc_master/presentation/bindings/home_bindings.dart';
 import 'package:loc_master/presentation/routes/app_pages.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p; // <-- Add this line

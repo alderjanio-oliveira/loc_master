@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:loc_master/presentation/bindings/details_renters.bindings.dart';
 import 'package:loc_master/presentation/bindings/home_bindings.dart';
 import 'package:loc_master/presentation/bindings/rental_bindings.dart';
+import 'package:loc_master/presentation/bindings/rental_register.bindings.dart';
 import 'package:loc_master/presentation/bindings/renter_bindings.dart';
 import 'package:loc_master/presentation/bindings/search_bindings.dart';
 import 'package:loc_master/presentation/bindings/tenant_register_binding.dart';
@@ -10,6 +11,7 @@ import 'package:loc_master/presentation/bindings/vehicle_details_binding.dart';
 import 'package:loc_master/presentation/bindings/vehicle_register_binding.dart';
 import 'package:loc_master/presentation/organisms/renters/search_page.dart';
 import 'package:loc_master/presentation/pages/home/home_page.dart';
+import 'package:loc_master/presentation/pages/rentals/rentals_register_page.dart';
 import 'package:loc_master/presentation/pages/rentals/retals_page.dart';
 import 'package:loc_master/presentation/pages/tenants/tenant_register_page.dart';
 import 'package:loc_master/presentation/pages/tenants/tenant_details_page.dart';
@@ -65,6 +67,11 @@ class AppPages {
       name: Routes.detailsRenters,
       page: () => TenantDetailsPage(),
       binding: DetailsRetersBinding(),
+    ),
+    GetPage(
+      name: Routes.rentalRegister,
+      page: () => RentalRegisterPage(),
+      binding: RentalRegisterBinding(),
     ),
   ];
 }
