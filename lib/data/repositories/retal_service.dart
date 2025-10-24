@@ -23,17 +23,29 @@ class RentalService extends GetxService {
         .getSingleOrNull();
   }
 
-  Future<void> rentVehicle(Vehicle vehicle, Renter renter) async {
+  Future<Rental?> _checkExistingRental(int vehicleId, int renterId) async {
+    return await (database.select(database.rentals)
+          ..where((tbl) =>
+              tbl.vehicleId.equals(vehicleId) | tbl.renterId.equals(renterId)))
+        .getSingleOrNull();
+  }
+
+  Future<dynamic> rentVehicle(Vehicle vehicle, Renter renter,
+      {RentalsCompanion? rental}) async {
+    if (await _checkExistingRental(vehicle.id!, renter.id!) != null) {
+      return 'user-already-has-rental'.tr;
+    }
     await database.into(database.rentals).insert(
-          RentalsCompanion(
-            vehicleId: drift.Value(vehicle.id!),
-            renterId: drift.Value(renter.id!),
-            startDate: drift.Value(DateTime.now()),
-            endDate: drift.Value(
-              DateTime.now().add(Duration(days: 7)),
-            ),
-            totalValue: drift.Value(1 * 7),
-          ),
+          rental ??
+              RentalsCompanion(
+                vehicleId: drift.Value(vehicle.id!),
+                renterId: drift.Value(renter.id!),
+                startDate: drift.Value(DateTime.now()),
+                endDate: drift.Value(
+                  DateTime.now().add(Duration(days: 7)),
+                ),
+                totalValue: drift.Value(1 * 7),
+              ),
         );
   }
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loc_master/presentation/controllers/rentals/rentals_controller.dart';
 import 'package:loc_master/presentation/organisms/list/list_builder_organism.dart';
+import 'package:loc_master/presentation/routes/app_pages.dart';
 import 'package:loc_master/presentation/templates/load_component.dart';
 
 class RentalsPage extends GetView<RentalsController> {
@@ -21,6 +22,10 @@ class RentalsPage extends GetView<RentalsController> {
             controller.deleteRental(item);
           },
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => Get.toNamed(Routes.rentalRegister),
+        child: const Icon(Icons.add),
       ),
     );
   }

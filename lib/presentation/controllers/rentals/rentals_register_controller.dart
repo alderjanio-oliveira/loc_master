@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:loc_master/data/database/database.dart';
+import 'package:loc_master/data/repositories/retal_service.dart';
 import 'package:loc_master/data/repositories/vehicles_services.dart';
+import 'package:drift/drift.dart' as drift;
 
 class RentalRegisterController extends GetxController {
   RxList<Renter> tenants = <Renter>[].obs;
   RxList<Vehicle> vehicles = <Vehicle>[].obs;
   RxBool isLoading = true.obs;
   final VehiclesService vehiclesService;
+  final RentalService rentalService;
   AppDatabase db;
 
   TextEditingController tenantSearchController = TextEditingController();
@@ -16,11 +19,20 @@ class RentalRegisterController extends GetxController {
   TextEditingController rentalDueDayController = TextEditingController();
   TextEditingController rentalPeriodController = TextEditingController();
 
-  RentalRegisterController({required this.db, required this.vehiclesService});
+  final RxInt selectedTenantId = RxInt(-1);
+  final RxInt selectedVehicleId = RxInt(-1);
+
+  RentalRegisterController({
+    required this.db,
+    required this.vehiclesService,
+    required this.rentalService,
+  });
 
   @override
   void onInit() async {
     super.onInit();
+    rentalDueDayController.text =
+        DateTime.now().toIso8601String().split('T').first;
     await loadTenants();
     await loadVehicles();
   }
@@ -48,7 +60,19 @@ class RentalRegisterController extends GetxController {
   }
 
   onSubmit() {
-    // Lógica para submissão do formulário de aluguel
-    print('Submitting rental form');
+    rentalService.rentVehicle(vehicles[0], tenants[0], rental: _buildRental());
+  }
+
+  _buildRental() {
+    return RentalsCompanion(
+      vehicleId: drift.Value(selectedVehicleId.value),
+      renterId: drift.Value(selectedTenantId.value),
+      startDate: drift.Value(DateTime.parse(rentalDueDayController.text)),
+      endDate: drift.Value(DateTime.now().add(Duration(days: 7))),
+      totalValue: drift.Value(1 * 7),
+      paidValue: drift.Value(double.parse(rentalValueController.text)),
+      type: drift.Value('weekly'),
+      status: drift.Value('active'),
+    );
   }
 }

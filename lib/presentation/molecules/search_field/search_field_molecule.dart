@@ -27,8 +27,7 @@ class SearchFieldMolecule<T> extends GetView<SearchFieldController> {
       return;
     }
     loading = true;
-    final results = await searchFunction(query);
-    suggestions.assignAll(results);
+    suggestions.value = await searchFunction(query);
     loading = false;
   }
 
@@ -64,10 +63,10 @@ class SearchFieldMolecule<T> extends GetView<SearchFieldController> {
                   shrinkWrap: true,
                   itemCount: suggestions.length,
                   itemBuilder: (context, index) {
-                    final item = suggestions[index];
+                    dynamic item = suggestions[index];
                     return InkWell(
                       onTap: () {
-                        fieldController.text = item.toString();
+                        fieldController.text = (item).toString();
                         onSelect(item);
                         suggestions.clear();
                       },

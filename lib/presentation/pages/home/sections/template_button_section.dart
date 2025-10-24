@@ -33,7 +33,7 @@ class TemplateButtonSection extends StatelessWidget {
           ),
           secondButton: MLabelButton(
             icon: const Icon(Icons.assignment_rounded),
-            onPressed: () => Get.toNamed(Routes.rentalRegister),
+            onPressed: () => Get.toNamed(Routes.rentals),
             label: 'rentals'.tr,
           ),
         ),

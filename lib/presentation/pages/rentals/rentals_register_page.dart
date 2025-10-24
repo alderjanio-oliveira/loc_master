@@ -22,6 +22,8 @@ class RentalRegisterPage extends GetView<RentalRegisterController> {
           onSubmit: controller.onSubmit,
           tenants: controller.tenants,
           vehicles: controller.vehicles,
+          selectedTenantId: controller.selectedTenantId,
+          selectedVehicleId: controller.selectedVehicleId,
         ));
   }
 }
